@@ -1,6 +1,6 @@
 {
-    "name": "car_rental",
-    "short_name": "car_rental",
+    "name": "shop_example",
+    "short_name": "shop_example",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

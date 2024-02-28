@@ -1,4 +1,4 @@
-# car_rental
+# shop_example
 
 A new Flutter project.
 
