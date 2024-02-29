@@ -34,14 +34,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20),
                 const SearchField(),
                 const SizedBox(height: 20),
-                HomeSlider(
-                  onChange: (value) {
-                    setState(() {
-                      currentSlide = value;
-                    });
-                  },
-                  currentSlide: currentSlide,
-                ),
+                // HomeSlider(
+                //   onChange: (value) {
+                //     setState(() {
+                //       currentSlide = value;
+                //     });
+                //   },
+                //   currentSlide: currentSlide,
+                // ),
+
                 const SizedBox(height: 20),
                 const Categories(),
                 const SizedBox(height: 25),
@@ -67,8 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 10,
                   ),
                   itemCount: products.length,
                   itemBuilder: (context, index) {
@@ -81,5 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+    
   }
 }

@@ -31,7 +31,7 @@ class ProductCard extends StatelessWidget {
               children: [
                 Image.asset(
                   product.image,
-                  width: 120,
+                  width: 150,
                   height: 120,
                 ),
                 Text(
@@ -41,14 +41,25 @@ class ProductCard extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
+                Text(
+                  product.category,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    color: Color.fromARGB(255, 129, 105, 105),
+                  ),
+                ),
+                const SizedBox(height: 10),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      "\$${product.price}",
+                      "${product.price}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 14,
+                        color: Color.fromARGB(255, 129, 105, 105),
                       ),
                     ),
                     Row(
@@ -66,29 +77,88 @@ class ProductCard extends StatelessWidget {
                       ),
                     )
                   ],
-                )
+                ),
+                const SizedBox(height: 10),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Ionicons.car_sport,
+                            size: 18,
+                            color: Colors.blue,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            '${product.vehicletype}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Color.fromARGB(255, 129, 105, 105),
+                            ),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Ionicons.star,
+                            size: 15,
+                            color: Color.fromARGB(255, 233, 210, 7),
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            '${product.rate}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Color.fromARGB(255, 129, 105, 105),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Ionicons.people_circle_outline,
+                            size: 18,
+                            color: Colors.blue,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            '${product.numberOfPeople}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Color.fromARGB(255, 129, 105, 105),
+                            ),
+                          )
+                        ],
+                      ),
+                    ]),
+                // Positioned.fill(
+                //   child: Align(
+                //     alignment: Alignment.topRight,
+                //     child: Container(
+                //       width: 30,
+                //       height: 30,
+                //       decoration: const BoxDecoration(
+                //         color: kprimaryColor,
+                //         borderRadius: BorderRadius.only(
+                //           topRight: Radius.circular(20),
+                //           bottomLeft: Radius.circular(10),
+                //         ),
+                //       ),
+                //       child: const Icon(
+                //         Ionicons.star_sharp,
+                //         color: Colors.white,
+                //         size: 18,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
-            ),
-          ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                  color: kprimaryColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(10),
-                  ),
-                ),
-                child: const Icon(
-                  Ionicons.heart_outline,
-                  color: Colors.white,
-                  size: 18,
-                ),
-              ),
             ),
           ),
         ],

@@ -27,7 +27,7 @@ class HomeSlider extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   image: const DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage("assets/slider.jpg"),
+                    image: AssetImage("assets/home-img.png"),
                   ),
                 ),
               );

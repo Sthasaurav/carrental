@@ -4,7 +4,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:shop_example/constants.dart';
 import 'package:shop_example/models/cart_item.dart';
 import 'package:shop_example/widgets/cart_tile.dart';
-import 'package:shop_example/widgets/check_out_box.dart';
+// import 'package:shop_example/widgets/check_out_box.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -39,9 +39,9 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ),
       ),
-      bottomSheet: CheckOutBox(
-        items: cartItems,
-      ),
+      // bottomSheet: CheckOutBox(
+      //   items: cartItems,
+      // ),
       body: ListView.separated(
         padding: const EdgeInsets.all(20),
         itemBuilder: (context, index) => CartTile(
