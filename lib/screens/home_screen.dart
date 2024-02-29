@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentSlide = 0;
 
   @override
+  
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kscaffoldColor,
@@ -42,9 +43,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 //   },
                 //   currentSlide: currentSlide,
                 // ),
-
+                
+                
                 const SizedBox(height: 20),
-                const Categories(),
+                 Categories(products: products), // Pass products here
                 const SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,6 +84,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-    
   }
 }
