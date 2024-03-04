@@ -30,7 +30,7 @@ final List<Product> products = [
     description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
     image: "assets/golf.png",
-    price: "Rs5000/Day",
+    price: "5000/Day",
     colors: [],
     category: "Golf",
     vehicletype: "automatic",
@@ -42,7 +42,7 @@ final List<Product> products = [
     description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
     image: "assets/v-2.png",
-    price: "Rs3500/Day",
+    price: "3500/Day",
     colors: [
       // Colors.brown,
       // Colors.red,
@@ -58,7 +58,7 @@ final List<Product> products = [
     description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
     image: "assets/i30n.png",
-    price: "Rs4500/Day",
+    price: "4500/Day",
     colors: [
       // Colors.black,
     ],
@@ -72,7 +72,7 @@ final List<Product> products = [
     description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
     image: "assets/yaris.png",
-    price: "Rs4200/Day",
+    price: "4200/Day",
     colors: [
       // Colors.black,
     ],
@@ -86,7 +86,7 @@ final List<Product> products = [
     description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
     image: "assets/v-3.png",
-    price: "Rs5000/Day",
+    price: "5000/Day",
     colors: [
       // Colors.black,
     ],

@@ -99,6 +99,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  full_calender:
+    dependency: "direct main"
+    description:
+      name: full_calender
+      sha256: "804b03c2a6f97fcf09c927b624011138fe316cfba64ebb5047d4e1b91638cbab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.12"
   google_fonts:
     dependency: "direct main"
     description:

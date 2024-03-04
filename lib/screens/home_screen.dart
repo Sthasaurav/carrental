@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:shop_example/constants.dart';
-import 'package:shop_example/models/category.dart';
 import 'package:shop_example/models/product.dart';
 import 'package:shop_example/widgets/categories.dart';
 import 'package:shop_example/widgets/home_appbar.dart';
-import 'package:shop_example/widgets/home_slider.dart';
 import 'package:shop_example/widgets/product_card.dart';
 import 'package:shop_example/widgets/search_field.dart';
 

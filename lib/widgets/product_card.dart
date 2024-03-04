@@ -10,6 +10,9 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Builder(builder: (BuilderContext context) {
+    // final Size size = MediaQuery.of(context).size;
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
@@ -49,13 +52,13 @@ class ProductCard extends StatelessWidget {
                     color: Color.fromARGB(255, 129, 105, 105),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      "${product.price}",
+                      "\Rs.${product.price}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -78,7 +81,7 @@ class ProductCard extends StatelessWidget {
                     )
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
