@@ -70,7 +70,12 @@ class _ProductScreenState extends State<ProductScreen> {
                   children: [
                     ProductInfo(product: widget.product),
                     const SizedBox(height: 20),
-                    ProductDescription(text: widget.product.description),
+                    ProductDescription(
+                      text: widget.product.description,
+                      phoneNumber: widget.product.phoneNumber,
+                      driverName: widget.product.driverName,
+                      driverImage: widget.product.driverImage,
+                    ),
                   ],
                 ),
               ),
@@ -181,12 +186,18 @@ class ProductInfo extends StatelessWidget {
 
 class ProductDescription extends StatelessWidget {
   final String text;
-  // final Function(String) makePhoneCall; // Declare a function parameter
+  final String phoneNumber;
+  final String driverName;
+  final String driverImage;
 
   const ProductDescription({
-    super.key,
+    Key? key,
     required this.text,
-  });
+    required this.phoneNumber,
+    required this.driverName,
+    required this.driverImage,
+  }) : super(key: key);
+
   Future<void> makePhoneCall(String phoneNumber) async {
     String url = 'tel:$phoneNumber';
     if (await canLaunch(url)) {
@@ -231,7 +242,7 @@ class ProductDescription extends StatelessWidget {
             // Owner picture
             CircleAvatar(
               radius: 20,
-              // Add owner picture here
+              backgroundImage: AssetImage(driverImage),
             ),
             const SizedBox(width: 10),
             // Owner name
@@ -244,13 +255,12 @@ class ProductDescription extends StatelessWidget {
                     "Driver",
                     style: TextStyle(
                       fontSize: 12,
-
                       color: Colors.grey, // Set color to grey
                     ),
                   ),
                   // Owner name
                   Text(
-                    "Tarqul Isalm",
+                    driverName,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -267,10 +277,7 @@ class ProductDescription extends StatelessWidget {
                 color: Colors.green,
               ),
               onPressed: () {
-                makePhoneCall(
-                    '9813615835'); // Replace 'your_phone_number_here' with the actual phone number
-
-                // Add functionality to call the owner
+                makePhoneCall(phoneNumber);
               },
             ),
             // Book now button
