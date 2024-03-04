@@ -17,6 +17,7 @@ dependencies:
   iconsax: ^0.0.8
   carousel_slider: ^4.2.1
   full_calender: ^1.1.12
+  url_launcher: ^6.2.5
 
 dev_dependencies:
   flutter_test:

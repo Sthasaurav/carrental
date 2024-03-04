@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:shop_example/constants.dart';
 import 'package:shop_example/models/product.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:shop_example/widgets/product_widgets/product_desc.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -180,7 +181,20 @@ class ProductInfo extends StatelessWidget {
 
 class ProductDescription extends StatelessWidget {
   final String text;
-  const ProductDescription({super.key, required this.text});
+  // final Function(String) makePhoneCall; // Declare a function parameter
+
+  const ProductDescription({
+    super.key,
+    required this.text,
+  });
+  Future<void> makePhoneCall(String phoneNumber) async {
+    String url = 'tel:$phoneNumber';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -253,6 +267,9 @@ class ProductDescription extends StatelessWidget {
                 color: Colors.green,
               ),
               onPressed: () {
+                makePhoneCall(
+                    '9813615835'); // Replace 'your_phone_number_here' with the actual phone number
+
                 // Add functionality to call the owner
               },
             ),
