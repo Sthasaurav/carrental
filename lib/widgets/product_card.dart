@@ -140,27 +140,7 @@ class ProductCard extends StatelessWidget {
                         ],
                       ),
                     ]),
-                // Positioned.fill(
-                //   child: Align(
-                //     alignment: Alignment.topRight,
-                //     child: Container(
-                //       width: 30,
-                //       height: 30,
-                //       decoration: const BoxDecoration(
-                //         color: kprimaryColor,
-                //         borderRadius: BorderRadius.only(
-                //           topRight: Radius.circular(20),
-                //           bottomLeft: Radius.circular(10),
-                //         ),
-                //       ),
-                //       child: const Icon(
-                //         Ionicons.star_sharp,
-                //         color: Colors.white,
-                //         size: 18,
-                //       ),
-                //     ),
-                //   ),
-                // ),
+             
               ],
             ),
           ),

@@ -71,11 +71,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     ProductInfo(product: widget.product),
                     const SizedBox(height: 20),
                     ProductDescription(
-                      text: widget.product.description,
-                      phoneNumber: widget.product.phoneNumber,
-                      driverName: widget.product.driverName,
-                      driverImage: widget.product.driverImage,
-                    ),
+                        text: widget.product.description,
+                        product: widget.product),
                   ],
                 ),
               ),
@@ -185,17 +182,13 @@ class ProductInfo extends StatelessWidget {
 }
 
 class ProductDescription extends StatelessWidget {
+  final Product product;
   final String text;
-  final String phoneNumber;
-  final String driverName;
-  final String driverImage;
 
   const ProductDescription({
     Key? key,
+    required this.product,
     required this.text,
-    required this.phoneNumber,
-    required this.driverName,
-    required this.driverImage,
   }) : super(key: key);
 
   Future<void> makePhoneCall(String phoneNumber) async {
@@ -242,7 +235,7 @@ class ProductDescription extends StatelessWidget {
             // Owner picture
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage(driverImage),
+              backgroundImage: AssetImage(product.driverImage),
             ),
             const SizedBox(width: 10),
             // Owner name
@@ -260,7 +253,7 @@ class ProductDescription extends StatelessWidget {
                   ),
                   // Owner name
                   Text(
-                    driverName,
+                    product.driverName,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -277,7 +270,7 @@ class ProductDescription extends StatelessWidget {
                 color: Colors.green,
               ),
               onPressed: () {
-                makePhoneCall(phoneNumber);
+                makePhoneCall(product.phoneNumber);
               },
             ),
             // Book now button

@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
     Scaffold(),
     Scaffold(),
     HomeScreen(),
-    CartScreen(),
+    AddScreen(),
     Scaffold(),
   ];
 
