@@ -1,7 +1,8 @@
+import 'package:firebase_2/Model/category.dart';
+import 'package:firebase_2/Model/product.dart';
+import 'package:firebase_2/screen/categories_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_example/models/category.dart';
-import 'package:shop_example/models/product.dart';
-import 'package:shop_example/screens/categories_screen.dart';
+
 
 class Categories extends StatelessWidget {
   final List<Product> products;

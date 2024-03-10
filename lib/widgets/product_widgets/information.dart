@@ -1,8 +1,9 @@
+import 'package:firebase_2/constant.dart';
+import 'package:firebase_2/Model/product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:shop_example/constants.dart';
-import 'package:shop_example/models/product.dart';
+
 
 class ProductInfo extends StatelessWidget {
   final Product product;
