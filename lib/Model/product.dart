@@ -7,21 +7,20 @@ class Product {
   final String description;
   final String image;
   final dynamic price;
-  final List<Color> colors;
   final String category;
   final double rate;
   final String vehicletype;
-  final dynamic numberOfPeople;
-  final String phoneNumber; // New property to store phone number
-  final String driverName; // New property to store driver name
-  final String driverImage; // New property to store driver image URL
+  final double numberOfPeople;
+  final String phoneNumber; 
+  final String driverName;
+  final String driverImage; 
+  
 
   Product({
     required this.title,
     required this.description,
     required this.image,
     required this.price,
-    required this.colors,
     required this.category,
     required this.rate,
     required this.vehicletype,
@@ -38,11 +37,7 @@ class Product {
       description: map['description'] ?? '',
       image: map['image'] ?? '',
       price: map['price'] ?? '',
-      // Convert color codes from int to Color objects
-      colors: (map['colors'] as List<dynamic>?)
-              ?.map<Color>((color) => Color(color))
-              .toList() ??
-          [],
+  
       category: map['category'] ?? '',
       rate: (map['rate'] ?? 0).toDouble(),
       vehicletype: map['vehicletype'] ?? '',

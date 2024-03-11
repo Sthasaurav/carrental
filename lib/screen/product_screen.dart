@@ -169,7 +169,7 @@ class ProductInfo extends StatelessWidget {
         ),
         const SizedBox(height: 5), // Add space between rows
         Text(
-          "\Rs.${product.price}",
+          "\Rs.${product.price}/Day",
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

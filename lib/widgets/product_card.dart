@@ -57,27 +57,13 @@ class ProductCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      "\Rs.${product.price}",
+                      "\Rs.${product.price}/Day",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                         color: Color.fromARGB(255, 129, 105, 105),
                       ),
                     ),
-                    Row(
-                      children: List.generate(
-                        product.colors.length,
-                        (cindex) => Container(
-                          height: 15,
-                          width: 15,
-                          margin: const EdgeInsets.only(right: 2),
-                          decoration: BoxDecoration(
-                            color: product.colors[cindex],
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                    )
                   ],
                 ),
                 const SizedBox(height: 5),
@@ -129,7 +115,7 @@ class ProductCard extends StatelessWidget {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            '${product.numberOfPeople}',
+                            '${product.numberOfPeople} \Seat',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,

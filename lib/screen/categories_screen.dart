@@ -69,20 +69,7 @@ class CategoriesScreen extends StatelessWidget {
                           color: Color.fromARGB(255, 129, 105, 105),
                         ),
                       ),
-                      Row(
-                        children: List.generate(
-                          product.colors.length,
-                          (cindex) => Container(
-                            height: 15,
-                            width: 15,
-                            margin: const EdgeInsets.only(right: 2),
-                            decoration: BoxDecoration(
-                              color: product.colors[cindex],
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                      )
+                  
                     ],
                   ),
                   SizedBox(height: 10),
