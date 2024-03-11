@@ -1,6 +1,5 @@
 import 'package:firebase_2/constant.dart';
-import 'package:firebase_2/constant.dart';
-import 'package:firebase_2/screen/cart_screen.dart';
+
 import 'package:firebase_2/screen/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
     Scaffold(),
   ];
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(

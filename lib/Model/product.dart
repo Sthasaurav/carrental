@@ -1,3 +1,4 @@
+import 'package:firebase_2/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -30,7 +31,7 @@ class Product {
     required this.driverImage,
   });
 
-  // Define a static method 'fromMap' to convert a Firestore document snapshot into a 'Product' object
+  // Define the fromMap method to convert a Firestore document snapshot into a Product object
   static Product fromMap(Map<String, dynamic> map) {
     return Product(
       title: map['title'] ?? '',
@@ -53,233 +54,49 @@ class Product {
   }
 }
 
-final List<Product> products = [
-  // Add your product data here
-  Product(
-    title: "Volkswagen",
-    description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-    image: "assets/golf.png",
-    price: "5000/Day",
-    colors: [],
-    category: "Golf",
-    vehicletype: "automatic",
-    numberOfPeople: '5 Seats',
-    rate: 4.8,
-    phoneNumber: '9845474512', // Add phone number
-    driverName: 'John Doe', // Add driver name
-    driverImage: 'assets/1.png', // Add driver image URL
-  ),
-  Product(
-    title: "Volkswagen G20",
-    description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-    image: "assets/golf.png",
-    price: "4800/Day",
-    colors: [],
-    category: "Golf",
-    vehicletype: "manual",
-    numberOfPeople: '5 Seats',
-    rate: 4.4,
-    phoneNumber: '9860255214', // Add phone number
-    driverName: 'Umesh Awal', // Add driver name
-    driverImage: '', // Add driver image URL
-  ),
-  Product(
-    title: "Ford",
-    description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-    image: "assets/v-2.png",
-    price: "3500/Day",
-    colors: [],
-    vehicletype: "manual",
-    numberOfPeople: '4 Seats',
-    category: " Sedan ",
-    rate: 4.8,
-    phoneNumber: '9876543210', // Add phone number
-    driverName: 'Manish Shrestha', // Add driver name
-    driverImage: 'assets/1.png', // Add driver image URL
-  ),
-  Product(
-    title: " Hyundai",
-    description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-    image: "assets/i30n.png",
-    price: "4500/Day",
-    colors: [],
-    vehicletype: "automatic",
-    numberOfPeople: '4 Seats',
-    category: "HatchBack-Automatic",
-    rate: 3.8,
-    phoneNumber: '5556667777', // Add phone number
-    driverName: 'David Waiba', // Add driver name
-    driverImage: 'assets/3.png', // Add driver image URL
-  ),
-  Product(
-    title: " Toyota",
-    description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-    image: "assets/yaris.png",
-    price: "4200/Day",
-    colors: [],
-    vehicletype: "manual",
-    numberOfPeople: '5 Seats',
-    category: "Hatch Back",
-    rate: 4.5,
-    phoneNumber: '1112223333', // Add phone number
-    driverName: 'Emily Johnson', // Add driver name
-    driverImage: 'assets/4.png', // Add driver image URL
-  ),
-  Product(
-    title: " Renault",
-    description:
-        "Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-    image: "assets/v-3.png",
-    price: "5000/Day",
-    colors: [],
-    vehicletype: "manual",
-    numberOfPeople: '5 Seats',
-    category: "CUV",
-    rate: 4.3,
-    phoneNumber: '9845123654', // Add phone number
-    driverName: 'Manoj Tiwari', // Add driver name
-    driverImage: 'assets/6.png', // Add driver image URL
-  )
-];
+class ProductPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Product Details'),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection("product").snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-void pushProductsToFirestore(List<Product> products) {
-  try {
-    for (var product in products) {
-      FirebaseFirestore.instance.collection("product").add({
-        'title': product.title,
-        'description': product.description,
-        'image': product.image,
-        'price': product.price,
-        'colors': product.colors.map((color) => color.value).toList(),
-        'category': product.category,
-        'rate': product.rate,
-        'vehicletype': product.vehicletype,
-        'numberOfPeople': product.numberOfPeople,
-        'phoneNumber': product.phoneNumber,
-        'driverName': product.driverName,
-        'driverImage': product.driverImage,
-      });
-    }
-    print("Products pushed to Firestore successfully.");
-  } catch (e) {
-    print("Error pushing products to Firestore: $e");
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(
+                child: Text('No product details found in Firestore.'));
+          }
+
+          // Add this line to see the document count
+          print('Document Count: ${snapshot.data!.docs.length}');
+
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              try {
+                Map<String, dynamic> data =
+                    snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                print("Data for index $index: $data");
+                Product product = Product.fromMap(data);
+                return ProductCard(product: product);
+              } catch (e) {
+                print("Error processing data for index $index: $e");
+                return Container(); // Skip invalid data
+              }
+            },
+          );
+        },
+      ),
+    );
   }
 }
-
-
-
-// import 'package:flutter/material.dart';
-
-// class Product {
-  
-//   final String title;
-//   final String description;
-//   final String image;
-//   final dynamic price;
-//   final List<Color> colors;
-//   final String category;
-//   final double rate;
-//   final String vehicletype;
-//   final dynamic numberOfPeople;
-//   final String phoneNumber; // New property to store phone number
-//   final String driverName; // New property to store driver name
-//   final String driverImage; // New property to store driver image URL
-
-//   Product({
-//     required this.title,
-//     required this.description,
-//     required this.image,
-//     required this.price,
-//     required this.colors,
-//     required this.category,
-//     required this.rate,
-//     required this.vehicletype,
-//     required this.numberOfPeople,
-//     required this.phoneNumber,
-//     required this.driverName,
-//     required this.driverImage,
-//   });
-// }
-
-// final List<Product> products = [
-//   Product(
-//     title: "Volkswagen",
-//     description:
-//         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-//     image: "assets/golf.png",
-//     price: "5000/Day",
-//     colors: [],
-//     category: "Golf",
-//     vehicletype: "automatic",
-//     numberOfPeople: '5 Seats',
-//     rate: 4.8,
-//     phoneNumber: '9845474512', // Add phone number
-//     driverName: 'John Doe', // Add driver name
-//     driverImage: 'assets/1.png', // Add driver image URL
-//   ),
-  // Product(
-  //   title: "Ford",
-  //   description:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-  //   image: "assets/v-2.png",
-  //   price: "3500/Day",
-  //   colors: [],
-  //   vehicletype: "manual",
-  //   numberOfPeople: '4 Seats',
-  //   category: " Sedan ",
-  //   rate: 4.8,
-  //   phoneNumber: '9876543210', // Add phone number
-  //   driverName: 'Manish Shrestha', // Add driver name
-  //   driverImage: 'assets/1.png', // Add driver image URL
-  // ),
-  // Product(
-  //   title: " Hyundai",
-  //   description:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-  //   image: "assets/i30n.png",
-  //   price: "4500/Day",
-  //   colors: [],
-  //   vehicletype: "automatic",
-  //   numberOfPeople: '4 Seats',
-  //   category: "HatchBack-Automatic",
-  //   rate: 3.8,
-  //   phoneNumber: '5556667777', // Add phone number
-  //   driverName: 'David Waiba', // Add driver name
-  //   driverImage: 'assets/3.png', // Add driver image URL
-  // ),
-  // Product(
-  //   title: " Toyota",
-  //   description:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-  //   image: "assets/yaris.png",
-  //   price: "4200/Day",
-  //   colors: [],
-  //   vehicletype: "manual",
-  //   numberOfPeople: '5 Seats',
-  //   category: "Hatch Back",
-  //   rate: 4.5,
-  //   phoneNumber: '1112223333', // Add phone number
-  //   driverName: 'Emily Johnson', // Add driver name
-  //   driverImage: 'assets/4.png', // Add driver image URL
-  // ),
-  // Product(
-  //   title: " Renault",
-  //   description:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie ac feugiat. In massa tempor nec feugiat nisl. Libero id faucibus nisl tincidunt.",
-  //   image: "assets/v-3.png",
-  //   price: "5000/Day",
-  //   colors: [],
-  //   vehicletype: "manual",
-  //   numberOfPeople: '5 Seats',
-  //   category: "CUV",
-  //   rate: 4.3,
-  //   phoneNumber: '9845123654', // Add phone number
-  //   driverName: 'Manoj Tiwari', // Add driver name
-  //   driverImage: 'assets/6.png', // Add driver image URL
-  // )
-// ];

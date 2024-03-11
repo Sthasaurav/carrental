@@ -3,10 +3,6 @@ import 'package:firebase_2/Model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import 'package:ionicons/ionicons.dart';
-// import 'package:shop_example/constants.dart';
-// import 'package:shop_example/models/product.dart';
-// import 'package:shop_example/widgets/product_widgets/product_desc.dart';
 
 class ProductScreen extends StatefulWidget {
   final Product product;
