@@ -62,6 +62,8 @@ dependencies:
   geocoding: ^2.2.0
   ionicons: ^0.2.2
   iconsax: ^0.0.8
+  khalti_flutter: ^3.0.0
+  khalti: ^2.0.0
 
 dev_dependencies:
   flutter_test:

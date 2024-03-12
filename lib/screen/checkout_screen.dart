@@ -74,11 +74,11 @@ class CheckoutScreen extends StatelessWidget {
                     buildOrderDetail("Phone No.     ", product.phoneNumber),
                     const SizedBox(height: 20),
                     ElevatedButton(
+                      // Implement the logic to complete the booking
+                      // This could involve processing payment, updating database, etc.
+                      // After completion, navigate to a confirmation screen
+                      // Assuming you have initialized Firestore somewhere in your app
                       onPressed: () async {
-                        // Implement the logic to complete the booking
-                        // This could involve processing payment, updating database, etc.
-                        // After completion, navigate to a confirmation screen
-                        // Assuming you have initialized Firestore somewhere in your app
                         FirebaseFirestore firestore =
                             FirebaseFirestore.instance;
 
@@ -143,14 +143,14 @@ class CheckoutScreen extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 18, color: Colors.grey),
+          style: const TextStyle(fontSize: 15, color: Colors.grey),
         ),
         const SizedBox(width: 10),
         Spacer(),
         Expanded(
           child: Text(
             value,
-            style: const TextStyle(fontSize: 18, color: Colors.black),
+            style: const TextStyle(fontSize: 15, color: Colors.black),
           ),
         ),
       ],
