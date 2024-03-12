@@ -1,5 +1,6 @@
 import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/Model/product.dart';
+import 'package:firebase_2/screen/checkout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -279,36 +280,42 @@ class ProductDescription extends StatelessWidget {
 
         ElevatedButton(
           onPressed: () {
-            // Show confirmation dialog
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Confirm Booking"),
-                  content: Text("Are you sure you want to book this product?"),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Close the dialog
-                      },
-                      child: Text("Cancel"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        // Add functionality for booking now
-                        // This could involve navigating to the checkout screen
-                        // or performing any necessary backend operations.
-                        // Once done, you can close the dialog.
-                        Navigator.pop(context); // Close the dialog
-                        // Navigate to the checkout screen or perform booking operations
-                      },
-                      child: Text("Confirm"),
-                    ),
-                  ],
-                );
-              },
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CheckoutScreen(product: product),
+              ),
             );
           },
+          // Show confirmation dialog
+          // showDialog(
+          //   context: context,
+          //   builder: (BuildContext context) {
+          //     return AlertDialog(
+          //       title: Text("Confirm Booking"),
+          //       content: Text("Are you sure you want to book this product?"),
+          //       actions: [
+          //         TextButton(
+          //           onPressed: () {
+          //             Navigator.pop(context); // Close the dialog
+          //           },
+          //           child: Text("Cancel"),
+          //         ),
+          //         TextButton(
+          //           onPressed: () {
+          //             // Add functionality for booking now
+          //             // This could involve navigating to the checkout screen
+          //             // or performing any necessary backend operations.
+          //             // Once done, you can close the dialog.
+          //             Navigator.pop(context); // Close the dialog
+          //             // Navigate to the checkout screen or perform booking operations
+          //           },
+          //           child: Text("Confirm"),
+          //         ),
+          //       ],
+          //     );
+          //   },
+          // );
+
           style: ElevatedButton.styleFrom(
             primary: kprimaryColor, // Change button color to orange
             shape: RoundedRectangleBorder(
