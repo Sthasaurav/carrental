@@ -72,6 +72,10 @@ class CheckoutScreen extends StatelessWidget {
                     buildOrderDetail("Driver's Name", product.driverName),
                     const SizedBox(height: 15),
                     buildOrderDetail("Phone No.     ", product.phoneNumber),
+                    const SizedBox(height: 15),
+
+                    buildOrderDetail(
+                        "Vehicle Number         ", "${product.vehicleNumber}"),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       // Implement the logic to complete the booking
@@ -82,35 +86,61 @@ class CheckoutScreen extends StatelessWidget {
                         FirebaseFirestore firestore =
                             FirebaseFirestore.instance;
 
-                        // Prepare the data to be stored in Firestore
-                        Map<String, dynamic> bookingData = {
-                          'title': product.title,
-                          'category': product.category,
-                          'price': product.price,
-                          'vehicletype': product.vehicletype,
-                          'driverName': product.driverName,
-                          'phoneNumber': product.phoneNumber,
-                          // Add more fields if needed
-                        };
+                        // Check if any document in the "booking" collection has the same "vehicle_no" value
+                        QuerySnapshot querySnapshot = await firestore
+                            .collection('booking')
+                            .where('vehicle_no',
+                                isEqualTo: product.vehicleNumber)
+                            .get();
 
-                        try {
-                          // Add the booking data to Firestore
-                          await firestore
-                              .collection('booking')
-                              .add(bookingData);
+                        // If any matching document is found, show the message
+                        if (querySnapshot.docs.isNotEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Already Booked!!!'),
+                              content: Text(
+                                  'Sorry, this vehicle is already booked, try renting any other vehicle.'),
+                              actions: [
+                                TextButton(
+                                  // onPressed: () => Navigator.pop(context),
+                                  onPressed: () => Navigator.popUntil(
+                                      context, (route) => route.isFirst),
 
-                          // After successful booking, navigate to confirmation screen
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ConfirmationScreen(),
+                                  child: Text('OK'),
+                                ),
+                              ],
                             ),
                           );
-                        } catch (e) {
-                          // Handle errors, such as Firestore write errors
-                          print("Error adding booking data: $e");
+                        } else {
+                          try {
+                            // Proceed with the booking logic
+                            // Add the booking data to Firestore
+                            await firestore.collection('booking').add({
+                              'title': product.title,
+                              'category': product.category,
+                              'price': product.price,
+                              'vehicletype': product.vehicletype,
+                              'driverName': product.driverName,
+                              'phoneNumber': product.phoneNumber,
+                              'vehicle_no': product.vehicleNumber,
+                              // Add more fields if needed
+                            });
+
+                            // After successful booking, navigate to confirmation screen
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ConfirmationScreen(),
+                              ),
+                            );
+                          } catch (e) {
+                            // Handle errors, such as Firestore write errors
+                            print("Error adding booking data: $e");
+                          }
                         }
                       },
+
                       style: ElevatedButton.styleFrom(
                         primary: kprimaryColor,
                         shape: RoundedRectangleBorder(

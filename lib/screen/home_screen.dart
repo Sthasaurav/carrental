@@ -45,7 +45,9 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 const SizedBox(height: 10),
                 StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection("product").snapshots(),
+                  stream: FirebaseFirestore.instance
+                      .collection("product")
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -56,13 +58,16 @@ class HomeScreen extends StatelessWidget {
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Center(child: Text('No product details found in Firestore.'));
+                      return Center(
+                          child:
+                              Text('No product details found in Firestore.'));
                     }
 
                     return GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 8,
                         mainAxisSpacing: 10,
@@ -70,7 +75,8 @@ class HomeScreen extends StatelessWidget {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         try {
-                          Map<String, dynamic> data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                          Map<String, dynamic> data = snapshot.data!.docs[index]
+                              .data() as Map<String, dynamic>;
                           print("Data for index $index: $data");
                           Product product = Product.fromMap(data);
                           return ProductCard(product: product);
