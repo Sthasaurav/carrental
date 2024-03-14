@@ -317,7 +317,7 @@ class ProductDescription extends StatelessWidget {
           // );
 
           style: ElevatedButton.styleFrom(
-            primary: kprimaryColor, // Change button color to orange
+            backgroundColor: kprimaryColor, // Change button color to orange
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10), // Set slight curve
             ),

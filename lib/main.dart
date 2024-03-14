@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_2/provider/signupprovider.dart';
+import 'package:firebase_2/screen/admin/order_screen.dart';
+import 'package:firebase_2/screen/admin/admin_screen.dart';
 // import 'package:firebase_2/Model/product.dart';
 // import 'package:firebase_2/screen/home_screen.dart';
 import 'package:firebase_2/screen/main_screen.dart';
+
 import 'package:firebase_2/Model/userlocation.dart';
 // import 'package:firebase_2/view/credentialdetails.dart';
 // import 'package:firebase_2/view/login.dart';

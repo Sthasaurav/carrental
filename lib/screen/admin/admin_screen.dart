@@ -1,29 +1,25 @@
 import 'package:firebase_2/constant.dart';
+import 'package:firebase_2/screen/admin/order_screen.dart';
 
 import 'package:firebase_2/screen/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ionicons/ionicons.dart';
-// import 'package:iconsax/iconsax.dart';
-// import 'package:ionicons/ionicons.dart';
-// import 'package:shop_example/constants.dart';
-// import 'package:shop_example/screens/cart_screen.dart';
-// import 'package:shop_example/screens/home_screen.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class AdminScreen extends StatefulWidget {
+  const AdminScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<AdminScreen> createState() => _AdminScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _AdminScreenState extends State<AdminScreen> {
   int currentTab = 2;
   List screens = const [
     Scaffold(),
     Scaffold(),
-    HomeScreen(),
+    OrderPage(),
     // AddScreen(),
     Scaffold(),
   ];
