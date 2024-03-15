@@ -8,7 +8,9 @@ import '../api/apiservice.dart';
 import '../api/apiserviceimpl.dart';
 
 class SignUpProvider extends ChangeNotifier {
-  String? name, address, phone, password, email;
+  String? name, address, phone, email;
+  String? password, newPassword, retypePassword;
+
   String? errorMessage;
   bool isUserExist = false;
   List<Credential> credentialList = [];
@@ -38,11 +40,17 @@ class SignUpProvider extends ChangeNotifier {
     if (signUpStatus != NetworkStatus.loading) {
       setsignUpStatus(NetworkStatus.loading);
     }
+       if (newPassword != retypePassword) {
+      errorMessage = "Passwords do not match.";
+      setsignUpStatus(NetworkStatus.error);
+      return;
+    }
+
     Credential credential = Credential(
         address: address,
         email: email,
         name: name,
-        password: password,
+        password: newPassword,
         phone: phone);
     ApiResponse response = await apiservice.saveCredential(credential);
     if (response.networkStatus == NetworkStatus.success) {

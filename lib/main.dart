@@ -7,6 +7,8 @@ import 'package:firebase_2/screen/admin/admin_screen.dart';
 import 'package:firebase_2/screen/main_screen.dart';
 
 import 'package:firebase_2/Model/userlocation.dart';
+import 'package:firebase_2/view/login.dart';
+import 'package:firebase_2/view/signup.dart';
 // import 'package:firebase_2/view/credentialdetails.dart';
 // import 'package:firebase_2/view/login.dart';
 // import 'package:firebase_2/view/otp.dart';
@@ -85,9 +87,11 @@ class _MyAppState extends State<MyApp> {
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               useMaterial3: true,
             ),
-            home: MainScreen(),
+            // home: signUpProvider.isUserExist ? MainScreen() : Login(),
+
+            // home: MainScreen(),
             //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
-            //home: Login(),
+            home: signUpProvider.isUserExist ? SignUp() : Login(),
           );
         },
       ),
