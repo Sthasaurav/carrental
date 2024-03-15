@@ -2,25 +2,18 @@ class Credential {
   String? name;
   String? address;
   String? email;
-  String? phone;
+  String? contact;
   String? password;
-  String? id;
 
   Credential(
-      {this.name,
-      this.address,
-      this.email,
-      this.phone,
-      this.password,
-      this.id});
+      {this.name, this.address, this.email, this.contact, this.password});
 
   Credential.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     address = json['address'];
     email = json['email'];
-    phone = json['phone'];
+    contact = json['contact'];
     password = json['password'];
-    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,9 +21,9 @@ class Credential {
     data['name'] = this.name;
     data['address'] = this.address;
     data['email'] = this.email;
-    data['phone'] = this.phone;
+    data['contact'] = this.contact;
     data['password'] = this.password;
-    data['id'] = this.id;
     return data;
   }
+  
 }

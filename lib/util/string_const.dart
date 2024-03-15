@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 String nameStr = "Name";
 String nameValidationStr = "Please enter your name";
 String emailStr = "Email";
@@ -11,3 +13,13 @@ String passwordValidationStr = "Please enter your password";
 String genderStr = "Gender";
 String genderValidationStr = "Please select your gender";
 String submitStr = "Submit";
+String loginnowStr = "Login Now";
+String userStr = "New User";
+Color colorstr = const Color.fromARGB(255, 10, 135, 14);
+String loginStr = "LOG IN";
+String SignupStr = "Sign Up";
+String ForgetpassStr = "Forget Password?";
+String EmailaddressStr = "Email Address";
+String accountStr = "Create an Account";
+String passwordlengthStr = "Please enter 10 digit number";
+String namestr = "Name";

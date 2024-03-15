@@ -9,8 +9,7 @@ class AuthService {
       FirebaseFirestore.instance.collection('users');
 
   // Sign in with email and password
-  Future<User?> signInWithEmailAndPassword(
-      String email, String password) async {
+  Future<User?> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -33,15 +32,13 @@ class AuthService {
   ) async {
     try {
       // Create a new user
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
       // Save additional user details to Firestore
-      await saveUserDetailsToFirestore(
-          userCredential.user!.uid, name, address, contact, email);
+      await saveUserDetailsToFirestore(userCredential.user!.uid, name, address, contact,email);
 
       return userCredential.user;
     } catch (e) {
@@ -63,7 +60,7 @@ class AuthService {
         'name': name,
         'address': address,
         'contact': contact,
-        'email': email,
+        'email':email,
       };
 
       await _usersCollection.doc(userId).set(userData);

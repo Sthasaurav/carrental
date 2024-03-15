@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_2/provider/signupprovider.dart';
+import 'package:firebase_2/provider/passwordvisibility.dart';
+// import 'package:firebase_2/provider/signupprovider.dart';
 import 'package:firebase_2/screen/admin/order_screen.dart';
 import 'package:firebase_2/screen/admin/admin_screen.dart';
 // import 'package:firebase_2/Model/product.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_2/screen/admin/admin_screen.dart';
 import 'package:firebase_2/screen/main_screen.dart';
 
 import 'package:firebase_2/Model/userlocation.dart';
+import 'package:firebase_2/view/login.dart';
 // import 'package:firebase_2/view/credentialdetails.dart';
 // import 'package:firebase_2/view/login.dart';
 // import 'package:firebase_2/view/otp.dart';
@@ -72,12 +74,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<SignUpProvider>(
-          create: (_) => SignUpProvider(),
+        ChangeNotifierProvider<Passwordvisibility>(
+          create: (_) => Passwordvisibility(),
         ),
       ],
-      child: Consumer<SignUpProvider>(
-        builder: (context, signUpProvider, child) {
+      child: Consumer<Passwordvisibility>(
+        builder: (context, Passwordvisibility, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
@@ -85,7 +87,8 @@ class _MyAppState extends State<MyApp> {
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               useMaterial3: true,
             ),
-            home: MainScreen(),
+            home: isUserExist ? MainScreen() : LoginUi(),
+            // home: MainScreen(),
             //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
             //home: Login(),
           );
