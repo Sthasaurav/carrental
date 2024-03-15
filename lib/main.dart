@@ -87,11 +87,11 @@ class _MyAppState extends State<MyApp> {
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               useMaterial3: true,
             ),
-            // home: signUpProvider.isUserExist ? MainScreen() : Login(),
+            home: signUpProvider.isUserExist ? MainScreen() : Login(),
 
             // home: MainScreen(),
             //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
-            home: signUpProvider.isUserExist ? SignUp() : Login(),
+            // home: signUpProvider.isUserExist ? SignUp() : Login(),
           );
         },
       ),

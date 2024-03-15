@@ -22,36 +22,37 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "SignUp",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-        ),
-        backgroundColor: kprimaryColor,
-      ),
+      appBar: AppBar(),
       body: Consumer<SignUpProvider>(
         builder: (context, signUpProvider, child) => Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Container(
-              //   height: MediaQuery.of(context).size.height * 0.3,
-              //   decoration: BoxDecoration(
-              //     color: kprimaryColor,
-              //     borderRadius: BorderRadius.only(
-              //         bottomLeft: Radius.circular(90),
-              //         bottomRight: Radius.circular(90),
-              //         topLeft: Radius.circular(90),
-              //         topRight: Radius.circular(90)),
-              //   ),
-              //   child: Center(
-              //     child: Image.asset(
-              //       "assets/images/icon.png",
-              //       height: MediaQuery.of(context).size.height * 0.2,
-              //     ),
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'Create Account',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Fill your information below',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -161,24 +162,35 @@ class _SignUpState extends State<SignUp> {
                   ),
           ),
           const SizedBox(height: 10),
-          Custombutton(
-            primary: kprimaryColor,
-            onPrimary: Colors.white,
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                await signUpProvider.saveCredentials();
-                if (signUpProvider.signUpStatus == NetworkStatus.success) {
-                  Helper.snackBarMessage("Registered Successfully", context);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => Login()),
-                  );
-                } else if (signUpProvider.signUpStatus == NetworkStatus.error) {
-                  Helper.snackBarMessage("Registration Failed", context);
+          Container(
+            height: 50,
+            width: 220,
+            child: Custombutton(
+              primary: kprimaryColor,
+              onPrimary: Colors.white,
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  await signUpProvider.saveCredentials();
+                  if (signUpProvider.signUpStatus == NetworkStatus.success) {
+                    Helper.snackBarMessage("Registered Successfully", context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Login()),
+                    );
+                  } else if (signUpProvider.signUpStatus ==
+                      NetworkStatus.error) {
+                    Helper.snackBarMessage("Registration Failed", context);
+                  }
                 }
-              }
-            },
-            child: Text("Submit"),
+              },
+              child: Text(
+                "Submit",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           )
         ],
       ),

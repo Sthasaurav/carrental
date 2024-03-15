@@ -286,35 +286,7 @@ class ProductDescription extends StatelessWidget {
               ),
             );
           },
-          // Show confirmation dialog
-          // showDialog(
-          //   context: context,
-          //   builder: (BuildContext context) {
-          //     return AlertDialog(
-          //       title: Text("Confirm Booking"),
-          //       content: Text("Are you sure you want to book this product?"),
-          //       actions: [
-          //         TextButton(
-          //           onPressed: () {
-          //             Navigator.pop(context); // Close the dialog
-          //           },
-          //           child: Text("Cancel"),
-          //         ),
-          //         TextButton(
-          //           onPressed: () {
-          //             // Add functionality for booking now
-          //             // This could involve navigating to the checkout screen
-          //             // or performing any necessary backend operations.
-          //             // Once done, you can close the dialog.
-          //             Navigator.pop(context); // Close the dialog
-          //             // Navigate to the checkout screen or perform booking operations
-          //           },
-          //           child: Text("Confirm"),
-          //         ),
-          //       ],
-          //     );
-          //   },
-          // );
+
 
           style: ElevatedButton.styleFrom(
             backgroundColor: kprimaryColor, // Change button color to orange
