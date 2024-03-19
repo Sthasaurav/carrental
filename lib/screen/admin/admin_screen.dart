@@ -1,8 +1,6 @@
 import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/screen/admin/order_screen.dart';
 
-import 'package:firebase_2/screen/home_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ionicons/ionicons.dart';

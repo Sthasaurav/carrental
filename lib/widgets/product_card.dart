@@ -24,7 +24,8 @@ class ProductCard extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            height: 250,
+            // match the height of the container with the height of the image
+            height: MediaQuery.of(context).size.height * 0.22,
             width: double.infinity,
             decoration: BoxDecoration(
               color: kcontentColor,
@@ -34,21 +35,21 @@ class ProductCard extends StatelessWidget {
               children: [
                 Image.asset(
                   product.image,
-                  width: 150,
-                  height: 120,
+                  width: 110,
+                  height: 80,
                 ),
                 Text(
                   product.title,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 15,
                   ),
                 ),
                 Text(
                   product.category,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 12,
+                    fontSize: 10,
                     color: Color.fromARGB(255, 129, 105, 105),
                   ),
                 ),
@@ -60,7 +61,7 @@ class ProductCard extends StatelessWidget {
                       "\Rs.${product.price}/Day",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Color.fromARGB(255, 129, 105, 105),
                       ),
                     ),
@@ -74,7 +75,7 @@ class ProductCard extends StatelessWidget {
                         children: [
                           Icon(
                             Ionicons.car_sport,
-                            size: 18,
+                            size: 15,
                             color: Colors.blue,
                           ),
                           SizedBox(width: 5),
@@ -82,7 +83,7 @@ class ProductCard extends StatelessWidget {
                             '${product.vehicletype}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 10,
                               color: Color.fromARGB(255, 129, 105, 105),
                             ),
                           )
@@ -100,7 +101,7 @@ class ProductCard extends StatelessWidget {
                             '${product.rate}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 10,
                               color: Color.fromARGB(255, 129, 105, 105),
                             ),
                           ),
@@ -118,7 +119,7 @@ class ProductCard extends StatelessWidget {
                             '${product.numberOfPeople} \Seat',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 10,
                               color: Color.fromARGB(255, 129, 105, 105),
                             ),
                           )

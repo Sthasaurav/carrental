@@ -97,8 +97,7 @@ class _UploadImageState extends State<UploadImage> {
         ),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 96, 141, 13),
-                onPrimary: Colors.white),
+                foregroundColor: Colors.white, backgroundColor: Color.fromARGB(255, 96, 141, 13)),
             onPressed: () {
               UploadImageToFirebase();
             },
@@ -109,8 +108,7 @@ class _UploadImageState extends State<UploadImage> {
         SizedBox(height: 100),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 70, 190, 34),
-                onPrimary: Colors.white),
+                foregroundColor: Colors.white, backgroundColor: Color.fromARGB(255, 70, 190, 34)),
             onPressed: () {
               googleLogin();
             },
