@@ -3,6 +3,7 @@ import 'package:firebase_2/customui/custombutton.dart';
 import 'package:firebase_2/customui/customtextformfield.dart';
 import 'package:firebase_2/provider/signupprovider.dart';
 import 'package:firebase_2/screen/main_screen.dart';
+import 'package:firebase_2/screen/profile/profile_screen.dart';
 import 'package:firebase_2/util/string_const.dart';
 import 'package:firebase_2/view/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
