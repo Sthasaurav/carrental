@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_2/provider/signupprovider.dart';
-import 'package:firebase_2/screen/admin/order_screen.dart';
-import 'package:firebase_2/screen/admin/admin_screen.dart';
 // import 'package:firebase_2/Model/product.dart';
 // import 'package:firebase_2/screen/home_screen.dart';
 import 'package:firebase_2/screen/main_screen.dart';
 
 import 'package:firebase_2/Model/userlocation.dart';
 import 'package:firebase_2/view/login.dart';
-import 'package:firebase_2/view/signup.dart';
 // import 'package:firebase_2/view/credentialdetails.dart';
 // import 'package:firebase_2/view/login.dart';
 // import 'package:firebase_2/view/otp.dart';
@@ -18,6 +15,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -80,18 +78,27 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Consumer<SignUpProvider>(
         builder: (context, signUpProvider, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home: signUpProvider.isUserExist ? MainScreen() : Login(),
-
-            // home: MainScreen(),
-            //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
-            // home: signUpProvider.isUserExist ? SignUp() : Login(),
+          return KhaltiScope(
+            publicKey: "test_public_key_318d23f7c4ec42c5924442004826021c",
+            builder: (context, navKey) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Demo',
+                theme: ThemeData(
+                  colorScheme:
+                      ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                  useMaterial3: true,
+                ),
+                home: signUpProvider.isUserExist ? MainScreen() : Login(),
+                navigatorKey: navKey,
+                localizationsDelegates: const [
+                  KhaltiLocalizations.delegate,
+                ],
+                // home: MainScreen(),
+                //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
+                // home: signUpProvider.isUserExist ? SignUp() : Login(),
+              );
+            },
           );
         },
       ),

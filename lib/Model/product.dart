@@ -10,12 +10,12 @@ class Product {
   final String category;
   final double rate;
   final String vehicletype;
-  final double numberOfPeople;
+  final int numberOfPeople;
   final String phoneNumber;
   final String driverName;
   final String driverImage;
   final String id;
-  final double count;
+  final int count;
   final double vehicleNumber;
 
   Product({
@@ -41,18 +41,19 @@ class Product {
       title: map['title'] ?? '',
       description: map['description'] ?? '',
       image: map['image'] ?? '',
-      price: map['price'] ?? '',
+      price: map['price'] != null ? (map['price'] as num).toDouble() : 0.0,
       category: map['category'] ?? '',
-      rate: (map['rate'] ?? 0).toDouble(),
+      rate: map['rate'] != null ? (map['rate'] as num).toDouble() : 0.0,
       vehicletype: map['vehicletype'] ?? '',
       numberOfPeople: map['numberOfPeople'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
       driverName: map['driverName'] ?? '',
       driverImage: map['driverImage'] ?? '',
       id: map['id'] ?? '',
-      count: (map['count'] ?? 0).toDouble(),
-      vehicleNumber:
-          (map['vehicleNumber'] ?? 0).toDouble(), // Handle vehicleNumber
+      count: map['count'] != null ? (map['count'] as num).toInt() : 0,
+      vehicleNumber: map['vehicleNumber'] != null
+          ? (map['vehicleNumber'] as num).toDouble()
+          : 0.0,
     );
   }
 }

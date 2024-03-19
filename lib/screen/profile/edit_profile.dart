@@ -146,7 +146,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   _deleteProfile();
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: kprimaryColor,
+                  backgroundColor: kprimaryColor,
                 ),
                 child: Text('Delete Profile'),
               ),
