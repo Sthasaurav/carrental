@@ -1,14 +1,47 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_2/screen/payment_gateway.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_2/Model/product.dart';
 import 'package:firebase_2/constant.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
-class CheckoutScreen extends StatelessWidget {
-  final Product product;
+class PaymentGatewayScreen extends StatelessWidget {
+  const PaymentGatewayScreen({Key? key}) : super(key: key);
 
-  const CheckoutScreen({Key? key, required this.product}) : super(key: key);
+  // create function to pay with khalti
+  payWithKhaltiInApp(BuildContext context) {
+    KhaltiScope.of(context).pay(
+      config: PaymentConfig(
+        amount: 10, //in paisa
+        productIdentity: 'Product Id',
+        productName: 'Product Name',
+        mobileReadOnly: false,
+      ),
+      preferences: [
+        PaymentPreference.khalti,
+      ],
+      onSuccess: (PaymentSuccessModel data) {
+        // Handle payment success
+        // You can navigate to the confirmation screen here
+
+        print("Payment Success");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ConfirmationScreen()),
+        );
+      },
+      onFailure: (PaymentFailureModel data) {
+        // Handle payment failure
+        // You can show an error message or retry option here
+        print("Payment Failure========");
+        // print data
+        print(data.toString());
+      },
+      onCancel: () {
+        // Handle cancellation logic here
+        print("Payment Cancelled");
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +85,7 @@ class CheckoutScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Order Confirmation",
+                      "Payment Gateway",
                       style: const TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
@@ -62,21 +95,19 @@ class CheckoutScreen extends StatelessWidget {
                     // Display order details such as product, rental dates, etc.
                     buildOrderDetail("From           ", ""),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Car Model     ", product.title),
+                    buildOrderDetail("Car Model     ", ""),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Category       ", product.category),
+                    buildOrderDetail("Category       ", ""),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Amount         ", "Rs.${product.price}"),
+                    buildOrderDetail("Amount         ", "Rs."),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Vehicle Type ", product.vehicletype),
+                    buildOrderDetail("Vehicle Type ", ""),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Driver's Name", product.driverName),
+                    buildOrderDetail("Driver's Name", ""),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Phone No.     ", product.phoneNumber),
+                    buildOrderDetail("Phone No.     ", ""),
                     const SizedBox(height: 15),
-
-                    buildOrderDetail(
-                        "Vehicle Number         ", "${product.vehicleNumber}"),
+                    buildOrderDetail("Vehicle Number         ", ""),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       // Implement the logic to complete the booking
@@ -84,72 +115,9 @@ class CheckoutScreen extends StatelessWidget {
                       // After completion, navigate to a confirmation screen
                       // Assuming you have initialized Firestore somewhere in your app
                       onPressed: () async {
-                        FirebaseFirestore firestore =
-                            FirebaseFirestore.instance;
-
-                        // Check if any document in the "booking" collection has the same "vehicle_no" value
-                        QuerySnapshot querySnapshot = await firestore
-                            .collection('booking')
-                            .where('vehicle_no',
-                                isEqualTo: product.vehicleNumber)
-                            .get();
-
-                        // If any matching document is found, show the message
-                        if (!querySnapshot.docs.isNotEmpty) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text('Already Booked!!!'),
-                              content: Text(
-                                  'Sorry, this vehicle is already booked, try renting any other vehicle.'),
-                              actions: [
-                                TextButton(
-                                  // onPressed: () => Navigator.pop(context),
-                                  onPressed: () => Navigator.popUntil(
-                                      context, (route) => route.isFirst),
-
-                                  child: Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          try {
-                            // Proceed with the booking logic
-                            // Add the booking data to Firestore
-                            await firestore.collection('booking').add({
-                              'title': product.title,
-                              'category': product.category,
-                              'price': product.price,
-                              'vehicletype': product.vehicletype,
-                              'driverName': product.driverName,
-                              'phoneNumber': product.phoneNumber,
-                              'vehicle_no': product.vehicleNumber,
-                              // Add more fields if needed
-                            });
-
-                            // redirect to payment gateway
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PaymentGatewayScreen(),
-                              ),
-                            );
-
-                            // // After successful booking, navigate to confirmation screen
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => ConfirmationScreen(),
-                            //   ),
-                            // );
-                          } catch (e) {
-                            // Handle errors, such as Firestore write errors
-                            print("Error adding booking data: $e");
-                          }
-                        }
+                        // Call the payment function
+                        payWithKhaltiInApp(context);
                       },
-
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kprimaryColor,
                         shape: RoundedRectangleBorder(

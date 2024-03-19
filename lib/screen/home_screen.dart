@@ -49,6 +49,7 @@ class HomeScreen extends StatelessWidget {
                       .collection("product")
                       .snapshots(),
                   builder: (context, snapshot) {
+                    print("Snapshot: $snapshot");
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }
