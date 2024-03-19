@@ -1,6 +1,7 @@
 import 'package:firebase_2/constant.dart';
 
 import 'package:firebase_2/screen/home_screen.dart';
+import 'package:firebase_2/screen/profile/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -24,8 +25,9 @@ class _MainScreenState extends State<MainScreen> {
     Scaffold(),
     Scaffold(),
     HomeScreen(),
-    // AddScreen(),
     Scaffold(),
+
+    ProfileScreen(),
   ];
 
   @override

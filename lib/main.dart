@@ -7,6 +7,7 @@ import 'package:firebase_2/screen/admin/admin_screen.dart';
 import 'package:firebase_2/screen/main_screen.dart';
 
 import 'package:firebase_2/Model/userlocation.dart';
+import 'package:firebase_2/screen/profile/profile_screen.dart';
 import 'package:firebase_2/view/login.dart';
 import 'package:firebase_2/view/signup.dart';
 // import 'package:firebase_2/view/credentialdetails.dart';

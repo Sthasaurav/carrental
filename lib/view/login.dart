@@ -169,11 +169,11 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 Divider(),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -284,7 +284,7 @@ class _LoginState extends State<Login> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MainScreen(),
+              builder: (context) => ProfileScreen(),
             ));
       }
     }
