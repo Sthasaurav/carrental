@@ -40,7 +40,7 @@ class SignUpProvider extends ChangeNotifier {
     if (signUpStatus != NetworkStatus.loading) {
       setsignUpStatus(NetworkStatus.loading);
     }
-       if (newPassword != retypePassword) {
+    if (newPassword != retypePassword) {
       errorMessage = "Passwords do not match.";
       setsignUpStatus(NetworkStatus.error);
       return;

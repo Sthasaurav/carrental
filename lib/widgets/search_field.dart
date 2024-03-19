@@ -22,7 +22,7 @@ class SearchField extends StatelessWidget {
           // Navigate to the SearchPage when the text field is clicked
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Search_Page()),
+            MaterialPageRoute(builder: (context) => SearchScreen()),
           );
         },
         child: Padding(
@@ -41,7 +41,7 @@ class SearchField extends StatelessWidget {
                     // Navigate to the SearchPage when the text field is clicked
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Search_Page()),
+                      MaterialPageRoute(builder: (context) => SearchScreen()),
                     );
                   },
                   decoration: InputDecoration(
@@ -59,7 +59,7 @@ class SearchField extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Search_Page()),
+                    MaterialPageRoute(builder: (context) => SearchScreen()),
                   );
                 },
                 icon: const Icon(

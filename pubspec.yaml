@@ -64,6 +64,7 @@ dependencies:
   iconsax: ^0.0.8
   khalti_flutter: ^3.0.0
   khalti: ^2.0.0
+  flutter_math_fork: ^0.7.2
 
 dev_dependencies:
   flutter_test:

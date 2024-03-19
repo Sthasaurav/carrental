@@ -1,4 +1,6 @@
+import 'package:firebase_2/api/auth_service.dart';
 import 'package:firebase_2/constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../api/networkstatus.dart';
@@ -18,6 +20,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -170,18 +173,40 @@ class _SignUpState extends State<SignUp> {
               onPrimary: Colors.white,
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  await signUpProvider.saveCredentials();
-                  if (signUpProvider.signUpStatus == NetworkStatus.success) {
-                    Helper.snackBarMessage("Registered Successfully", context);
-                    Navigator.pushReplacement(
+                  // Register the user with Firebase
+                  User? user = await _authService.registerWithEmailAndPassword(
+                    signUpProvider.email!,
+                    signUpProvider.password!,
+                    signUpProvider.name!,
+                    signUpProvider.address!,
+                    signUpProvider.phone!,
+                  );
+
+                  if (user != null) {
+                    // Registration successful
+                    Helper.snackBarMessage("Successfully Registered", context);
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Login()),
                     );
-                  } else if (signUpProvider.signUpStatus ==
-                      NetworkStatus.error) {
+                  } else {
+                    // Registration failed
                     Helper.snackBarMessage("Registration Failed", context);
                   }
                 }
+                // if (_formKey.currentState!.validate()) {
+                //   await signUpProvider.saveCredentials();
+                //   if (signUpProvider.signUpStatus == NetworkStatus.success) {
+                //     Helper.snackBarMessage("Registered Successfully", context);
+                //     Navigator.pushReplacement(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => Login()),
+                //     );
+                //   } else if (signUpProvider.signUpStatus ==
+                //       NetworkStatus.error) {
+                //     Helper.snackBarMessage("Registration Failed", context);
+                //   }
+                // }
               },
               child: Text(
                 "Submit",

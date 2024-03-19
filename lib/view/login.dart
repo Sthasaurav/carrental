@@ -1,3 +1,4 @@
+import 'package:firebase_2/api/auth_service.dart';
 import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/customui/custombutton.dart';
 import 'package:firebase_2/customui/customtextformfield.dart';
@@ -23,6 +24,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(),
       body: SafeArea(
         child: Consumer<SignUpProvider>(
-          builder: (context, signUpProvider1, child) => Padding(
+          builder: (context, signUpProvider, child) => Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -78,7 +80,7 @@ class _LoginState extends State<Login> {
                     color: kprimaryColor,
                   ),
                   onChanged: (value) {
-                    signUpProvider1.email = value;
+                    signUpProvider.email = value;
                   },
                   labelText: emailStr,
                   validator: (value) {
@@ -98,7 +100,7 @@ class _LoginState extends State<Login> {
                       color: kprimaryColor,
                     ),
                     onChanged: (value) {
-                      signUpProvider1.password = value;
+                      signUpProvider.password = value;
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -108,16 +110,16 @@ class _LoginState extends State<Login> {
                       }
                     },
                     labelText: passwordStr,
-                    obscureText: signUpProvider1.showPassword ? false : true,
-                    suffixIcon: signUpProvider1.showPassword
+                    obscureText: signUpProvider.showPassword ? false : true,
+                    suffixIcon: signUpProvider.showPassword
                         ? IconButton(
                             onPressed: () {
-                              signUpProvider1.passwordVisibility(false);
+                              signUpProvider.passwordVisibility(false);
                             },
                             icon: const Icon(Icons.visibility))
                         : IconButton(
                             onPressed: () {
-                              signUpProvider1.passwordVisibility(true);
+                              signUpProvider.passwordVisibility(true);
                             },
                             icon: const Icon(Icons.visibility_off))),
                 SizedBox(height: 20),
@@ -137,24 +139,43 @@ class _LoginState extends State<Login> {
                   child: Custombutton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        await signUpProvider1.loginCredentials();
-                        if (signUpProvider1.logInStatus ==
-                                NetworkStatus.success &&
-                            signUpProvider1.isUserExist) {
+                        User? user =
+                            await _authService.signInWithEmailAndPassword(
+                          signUpProvider.email!,
+                          signUpProvider.password!,
+                        );
+
+                        if (user != null) {
                           Helper.snackBarMessage(
                               "Successfully Logged in", context);
                           Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => MainScreen()),
-                              (Route<dynamic> route) => false);
-                        } else if (signUpProvider1.logInStatus ==
-                                NetworkStatus.success &&
-                            !signUpProvider1.isUserExist) {
-                          Helper.snackBarMessage("Invalid Credential", context);
-                        } else if (signUpProvider1.logInStatus ==
-                            NetworkStatus.error) {
-                          Helper.snackBarMessage("Failed to Save", context);
+                            MaterialPageRoute(
+                                builder: (context) => MainScreen()),
+                            (Route<dynamic> route) => false,
+                          );
+                        } else {
+                          Helper.snackBarMessage(
+                              "Invalid Credential!!!", context);
                         }
+
+                        // await signUpProvider.loginCredentials();
+                        // if (signUpProvider.logInStatus ==
+                        //         NetworkStatus.success &&
+                        //     signUpProvider.isUserExist) {
+                        //   Helper.snackBarMessage(
+                        //       "Successfully Logged in", context);
+                        //   Navigator.of(context).pushAndRemoveUntil(
+                        //       MaterialPageRoute(
+                        //           builder: (context) => MainScreen()),
+                        //       (Route<dynamic> route) => false);
+                        // } else if (signUpProvider.logInStatus ==
+                        //         NetworkStatus.success &&
+                        //     !signUpProvider.isUserExist) {
+                        //   Helper.snackBarMessage("Invalid Credential", context);
+                        // } else if (signUpProvider.logInStatus ==
+                        //     NetworkStatus.error) {
+                        //   Helper.snackBarMessage("Failed to Save", context);
+                        // }
                       }
                     },
                     child: Text(
