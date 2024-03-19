@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:firebase/util/string_const.dart';
 import 'package:flutter/material.dart';
 
 class Carousel extends StatelessWidget {

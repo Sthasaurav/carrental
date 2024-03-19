@@ -1,6 +1,7 @@
+import 'package:firebase_2/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:shop_example/constants.dart';
+
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({

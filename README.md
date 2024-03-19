@@ -1,4 +1,4 @@
-# shop_example
+# firebase_2
 
 A new Flutter project.
 

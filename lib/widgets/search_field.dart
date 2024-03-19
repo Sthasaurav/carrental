@@ -1,11 +1,12 @@
+import 'package:firebase_2/constant.dart';
+import 'package:firebase_2/screen/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:shop_example/constants.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,39 +17,59 @@ class SearchField extends StatelessWidget {
         color: kcontentColor,
         borderRadius: BorderRadius.circular(30),
       ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25,
-        vertical: 5,
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Ionicons.search,
-            color: Colors.grey,
-          ),
-          const SizedBox(width: 10),
-          const Flexible(
-            flex: 4,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Search...",
-                border: InputBorder.none,
+      child: GestureDetector(
+        onTap: () {
+          // Navigate to the SearchPage when the text field is clicked
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Search_Page()),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Row(
+            children: [
+              const Icon(
+                Ionicons.search,
+                color: Colors.grey,
               ),
-            ),
+              const SizedBox(width: 10),
+              Flexible(
+                flex: 4,
+                child: TextField(
+                  onTap: () {
+                    // Navigate to the SearchPage when the text field is clicked
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Search_Page()),
+                    );
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Search...",
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              Container(
+                height: 25,
+                width: 1.5,
+                color: Colors.grey,
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Search_Page()),
+                  );
+                },
+                icon: const Icon(
+                  Ionicons.options_outline,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
           ),
-          Container(
-            height: 25,
-            width: 1.5,
-            color: Colors.grey,
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Ionicons.options_outline,
-              color: Colors.grey,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

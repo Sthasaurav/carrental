@@ -1,8 +1,8 @@
+import 'package:firebase_2/Model/product.dart';
+import 'package:firebase_2/constant.dart';
+import 'package:firebase_2/screen/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:shop_example/constants.dart';
-import 'package:shop_example/models/product.dart';
-import 'package:shop_example/screens/product_screen.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -17,7 +17,7 @@ class ProductCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ProductScreen(product: product ),
+            builder: (context) => ProductScreen(product: product),
           ),
         );
       },
@@ -53,32 +53,17 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      "\Rs.${product.price}",
+                      "\Rs.${product.price}/Day",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                         color: Color.fromARGB(255, 129, 105, 105),
                       ),
                     ),
-                    Row(
-                      children: List.generate(
-                        product.colors.length,
-                        (cindex) => Container(
-                          height: 15,
-                          width: 15,
-                          margin: const EdgeInsets.only(right: 2),
-                          decoration: BoxDecoration(
-                            color: product.colors[cindex],
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                    )
                   ],
                 ),
                 const SizedBox(height: 5),
@@ -130,7 +115,7 @@ class ProductCard extends StatelessWidget {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            '${product.numberOfPeople}',
+                            '${product.numberOfPeople} \Seat',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
@@ -140,7 +125,6 @@ class ProductCard extends StatelessWidget {
                         ],
                       ),
                     ]),
-             
               ],
             ),
           ),
