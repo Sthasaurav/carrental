@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_2/provider/signupprovider.dart';
+import 'package:firebase_2/screen/admin/addcar.dart';
 import 'package:firebase_2/screen/admin/order_screen.dart';
 import 'package:firebase_2/screen/admin/admin_screen.dart';
 // import 'package:firebase_2/Model/product.dart';
@@ -91,7 +92,9 @@ class _MyAppState extends State<MyApp> {
               ),
               // home: signUpProvider.isUserExist ? MainScreen() : Login(),
 
+              // home: AddProductPage()
               home: MainScreen()
+
               //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
               // home: signUpProvider.isUserExist ? SignUp() : Login(),
               );
