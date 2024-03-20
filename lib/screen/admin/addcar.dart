@@ -1,4 +1,5 @@
 import 'package:firebase_2/Model/product.dart';
+import 'package:firebase_2/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -25,6 +26,7 @@ class _AddProductPageState extends State<AddProductPage> {
   TextEditingController _countController = TextEditingController();
   TextEditingController _vehicleNumberController = TextEditingController();
   TextEditingController _distanceController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -150,16 +152,16 @@ class _AddProductPageState extends State<AddProductPage> {
                     return null;
                   },
                 ),
-                // TextFormField(
-                //   controller: _idController,
-                //   decoration: InputDecoration(labelText: 'ID'),
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return 'Please enter an ID';
-                //     }
-                //     return null;
-                //   },
-                // ),
+                TextFormField(
+                  controller: _idController,
+                  decoration: InputDecoration(labelText: 'ID'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an ID';
+                    }
+                    return null;
+                  },
+                ),
                 // TextFormField(
                 //   controller: _countController,
                 //   decoration: InputDecoration(labelText: 'Count'),
@@ -176,6 +178,16 @@ class _AddProductPageState extends State<AddProductPage> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a vehicle number';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _locationController,
+                  decoration: InputDecoration(labelText: 'location'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a location of vehicle';
                     }
                     return null;
                   },
@@ -221,9 +233,10 @@ class _AddProductPageState extends State<AddProductPage> {
       driverName: _driverNameController.text,
       driverImage: _driverImageController.text,
       id: _idController.text,
-      count: int.parse(_countController.text),
+      // count: int.parse(_countController.text),
       vehicleNumber: double.parse(_vehicleNumberController.text),
       distance: double.parse(_distanceController.text),
+      location: _locationController.text,
     );
 
     // Send the product data to Firestore
@@ -235,19 +248,20 @@ class _AddProductPageState extends State<AddProductPage> {
     FirebaseFirestore.instance.collection('product').add({
       'title': product.title,
       'description': product.description,
-      'image': product.image,
+      'image': "assets/v-2.png",
       'price': product.price,
       'category': product.category,
-      'rate': product.rate,
+      'rate': 4.3,
       'vehicletype': product.vehicletype,
       'numberOfPeople': product.numberOfPeople,
       'phoneNumber': product.phoneNumber,
       'driverName': product.driverName,
-      'driverImage': product.driverImage,
-      'id': product.id,
-      'count': product.count,
+      'driverImage': "assets/v-2.png",
+      'id': 'Default ID',
+      // 'count': product.count,
       'vehicleNumber': product.vehicleNumber,
-      'distance': product.distance,
+      'distance': 2.6,
+      'location': product.location,
     }).then((value) {
       // Product added successfully, show a success message or navigate to another page
       ScaffoldMessenger.of(context).showSnackBar(
@@ -261,4 +275,27 @@ class _AddProductPageState extends State<AddProductPage> {
       );
     });
   }
+}
+
+Widget buildFormField(String label, TextEditingController controller,
+    String? Function(String? value)? validator, IconData prefixIcon) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    child: TextFormField(
+      controller: controller,
+      style: TextStyle(fontSize: 18),
+      decoration: InputDecoration(
+        prefixIcon: Icon(prefixIcon, color: kprimaryColor),
+        labelText: label,
+        labelStyle: TextStyle(fontSize: 16, color: kprimaryColor),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: kprimaryColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: kprimaryColor, width: 2),
+        ),
+      ),
+      validator: validator,
+    ),
+  );
 }

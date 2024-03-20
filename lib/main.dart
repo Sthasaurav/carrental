@@ -92,8 +92,8 @@ class _MyAppState extends State<MyApp> {
               ),
               // home: signUpProvider.isUserExist ? MainScreen() : Login(),
 
-              // home: AddProductPage()
-              home: MainScreen()
+              home: AddProductPage()
+              // home: MainScreen()
 
               //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
               // home: signUpProvider.isUserExist ? SignUp() : Login(),

@@ -15,9 +15,9 @@ class Product {
   final String driverName;
   final String driverImage;
   final String id;
-  final int count;
   final double vehicleNumber;
   final double distance;
+  final String location;
 
   Product({
     required this.title,
@@ -32,9 +32,10 @@ class Product {
     required this.driverName,
     required this.driverImage,
     required this.id,
-    required this.count,
     required this.vehicleNumber,
     required this.distance,
+    required this.location,
+
   });
 
   // Define the fromMap method to convert a Firestore document snapshot into a Product object
@@ -52,11 +53,12 @@ class Product {
       driverName: map['driverName'] ?? '',
       driverImage: map['driverImage'] ?? '',
       id: map['id'] ?? '',
-      count: map['count'] != null ? (map['count'] as num).toInt() : 0,
       vehicleNumber: map['vehicleNumber'] != null
           ? (map['vehicleNumber'] as num).toDouble()
           : 0.0,
       distance: map['distance'] ?? 0,
+      location: map['location'] ?? '',
+
     );
   }
 }
