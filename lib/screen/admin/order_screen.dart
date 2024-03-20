@@ -16,7 +16,7 @@ class _OrderPageState extends State<OrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Page'),
+        title: Text('Booking Notifications'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('booking').snapshots(),
@@ -47,8 +47,15 @@ class _OrderPageState extends State<OrderPage> {
               return Card(
                 margin: EdgeInsets.all(8.0),
                 child: ListTile(
-                  title: Text('Title: ${bookingData['title']}'),
-                  subtitle: Text('Vehicle No.: ${bookingData['vehicle_no']}'),
+                  title: Text('Model: ${bookingData['title']}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Category: ${bookingData['category']}'),
+                      Text('Price: \Rs.${bookingData['price']}'),
+                      Text('Vehicle No.: ${bookingData['vehicle_no']}'),
+                    ],
+                  ),
                   // Add accept button
                   trailing: ElevatedButton(
                     onPressed: () {
