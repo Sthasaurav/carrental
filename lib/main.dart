@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_2/provider/signupprovider.dart';
 import 'package:firebase_2/screen/admin/addcar.dart';
+import 'package:firebase_2/screen/admin/edit.dart';
 import 'package:firebase_2/screen/admin/order_screen.dart';
 import 'package:firebase_2/screen/admin/admin_screen.dart';
+import 'package:firebase_2/screen/allproduct.dart';
 // import 'package:firebase_2/Model/product.dart';
 // import 'package:firebase_2/screen/home_screen.dart';
 import 'package:firebase_2/screen/main_screen.dart';
@@ -48,8 +50,8 @@ class _MyAppState extends State<MyApp> {
   static double? _latitude;
   static double? _longitude;
   String? _locationName;
-  static List<double?> plumberLatitudeList = [];
-  static List<double?> plumberLongitudeList = [];
+  static List<double?> productLatitudeList = [];
+  static List<double?> productLongitudeList = [];
   static double? userLatitude;
   static double? userLongitude;
   late bool isUserExist;
@@ -66,7 +68,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     // notificationSetting();
     listenNotification();
-    fetchPlumberLocations();
+    fetchproductLocations();
     _getCurrentLocation();
     _fetchData();
 
@@ -206,32 +208,32 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _fetchData() async {
-    await _fetchPlumberLocations();
+    await _fetchproductLocations();
     await _fetchUserLocation();
     _calculateDistance();
   }
 
-  Future<void> _fetchPlumberLocations() async {
+  Future<void> _fetchproductLocations() async {
     try {
-      QuerySnapshot plumberSnapshot =
+      QuerySnapshot productSnapshot =
           await FirebaseFirestore.instance.collection('product').get();
 
-      if (plumberSnapshot.docs.isNotEmpty) {
-        for (QueryDocumentSnapshot plumberDocument in plumberSnapshot.docs) {
-          double? latitude = plumberDocument['latitude'];
-          double? longitude = plumberDocument['longitude'];
+      if (productSnapshot.docs.isNotEmpty) {
+        for (QueryDocumentSnapshot productDocument in productSnapshot.docs) {
+          double? latitude = productDocument['latitude'];
+          double? longitude = productDocument['longitude'];
 
-          plumberLatitudeList.add(latitude);
-          plumberLongitudeList.add(longitude);
+          productLatitudeList.add(latitude);
+          productLongitudeList.add(longitude);
 
-          print('Plumber Latitude: $latitude');
-          print('Plumber Longitude: $longitude');
+          print('product Latitude: $latitude');
+          print('product Longitude: $longitude');
         }
       } else {
-        print('No documents found in the plumber collection.');
+        print('No documents found in the product collection.');
       }
     } catch (e) {
-      print('Error fetching plumber locations: $e');
+      print('Error fetching product locations: $e');
     }
   }
 
@@ -280,64 +282,64 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _calculateDistance() {
-    if (plumberLatitudeList.isNotEmpty &&
+    if (productLatitudeList.isNotEmpty &&
         userLatitude != null &&
         userLongitude != null) {
-      for (int i = 0; i < plumberLatitudeList.length; i++) {
-        double? plumberLatitude = plumberLatitudeList[i];
-        double? plumberLongitude = plumberLongitudeList[i];
+      for (int i = 0; i < productLatitudeList.length; i++) {
+        double? productLatitude = productLatitudeList[i];
+        double? productLongitude = productLongitudeList[i];
 
-        if (plumberLatitude != null && plumberLongitude != null) {
+        if (productLatitude != null && productLongitude != null) {
           double distance = _calculateHaversineDistance(
-            plumberLatitude,
-            plumberLongitude,
+            productLatitude,
+            productLongitude,
             userLatitude!,
             userLongitude!,
           );
 
-          print('Distance from plumber $i to user: $distance km');
+          print('Distance from product $i to user: $distance km');
 
           // Update the Firestore document with the calculated distance
           _updateDistanceInFirestore(i, distance);
         }
       }
     } else {
-      print('No plumber locations available or user location missing.');
+      print('No product locations available or user location missing.');
     }
   }
 
   Future<void> _updateDistanceInFirestore(int index, double distance) async {
     try {
-      QuerySnapshot plumberSnapshot =
+      QuerySnapshot productSnapshot =
           await FirebaseFirestore.instance.collection('product').get();
 
-      if (plumberSnapshot.docs.isNotEmpty) {
-        QueryDocumentSnapshot plumberDocument = plumberSnapshot.docs[index];
+      if (productSnapshot.docs.isNotEmpty) {
+        QueryDocumentSnapshot productDocument = productSnapshot.docs[index];
 
         await FirebaseFirestore.instance
             .collection('product')
-            .doc(plumberDocument.id)
+            .doc(productDocument.id)
             .update({'distance': distance});
 
-        print('Distance updated in Firestore for plumber $index: $distance km');
+        print('Distance updated in Firestore for product $index: $distance km');
       } else {
-        print('No documents found in the plumber collection.');
+        print('No documents found in the product collection.');
       }
     } catch (e) {
       print('Error updating distance in Firestore: $e');
     }
   }
 
-  Future<void> fetchPlumberLocations() async {
+  Future<void> fetchproductLocations() async {
     try {
-      // Fetch documents from the "plumber" collection
-      QuerySnapshot plumberSnapshot =
+      // Fetch documents from the "product" collection
+      QuerySnapshot productSnapshot =
           await FirebaseFirestore.instance.collection("product").get();
 
       // Iterate through each document
-      for (QueryDocumentSnapshot plumberDocument in plumberSnapshot.docs) {
+      for (QueryDocumentSnapshot productDocument in productSnapshot.docs) {
         // Get the location name from the document
-        String locationName = plumberDocument['location'];
+        String locationName = productDocument['location'];
 
         // Append ", Nepal" to the location name
         String locationNameNepal = '$locationName, Nepal';
@@ -356,7 +358,7 @@ class _MyAppState extends State<MyApp> {
           // Update the Firestore document with latitude and longitude
           await FirebaseFirestore.instance
               .collection("product")
-              .doc(plumberDocument.id)
+              .doc(productDocument.id)
               .update({
             'latitude': latitude,
             'longitude': longitude,
@@ -370,7 +372,7 @@ class _MyAppState extends State<MyApp> {
         }
       }
     } catch (e) {
-      print('Error fetching plumber locations: $e');
+      print('Error fetching product locations: $e');
     }
   }
 }

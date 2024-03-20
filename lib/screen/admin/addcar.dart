@@ -3,6 +3,7 @@ import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/customui/customtextformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddProductPage extends StatefulWidget {
   List<String> categories = ['SUV', 'Sedan', 'Hatch-Back', 'Sports'];
@@ -147,6 +148,17 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 const SizedBox(height: 10),
                 CustomForm(
+                  controller: _locationController,
+                  labelText: 'Location',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the Location';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                CustomForm(
                   controller: _numberOfPeopleController,
                   labelText: 'Number of People',
                   validator: (value) {
@@ -189,6 +201,24 @@ class _AddProductPageState extends State<AddProductPage> {
                     return null;
                   },
                 ),
+                SizedBox(height: 10),
+                GestureDetector(
+                  onTap: _pickImage, // Call _pickImage() when tapped
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.add_photo_alternate,
+                        size: 36,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Tap to pick an image',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
@@ -221,84 +251,113 @@ class _AddProductPageState extends State<AddProductPage> {
     );
   }
 
-  void _submitProduct() {
+  Future<void> _pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _imageController.text = pickedImage.path;
+      });
+    }
+  }
+
+  void _submitProduct() async {
+    // Check if the form is valid
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    // Call _pickImage if no image is picked yet
+    if (_imageController.text.isEmpty) {
+      await _pickImage();
+    }
+
     // Construct a Product object from the form data
     Product product = Product(
       title: _titleController.text,
       description: _descriptionController.text,
-      image: '',
-      price: double.parse(_priceController.text), // Parse price to double
-      category: _selectedCategory ??
-          '', // Use selected category from dropdown or default to empty string
+      image: _imageController.text, // Use the picked image path
+      price: double.parse(_priceController.text),
+      category: _selectedCategory ?? '',
       rate: 0.0,
       vehicletype: _selectedVehicleType ?? '',
       numberOfPeople: int.parse(_numberOfPeopleController.text),
       phoneNumber: _phoneNumberController.text,
       driverName: _driverNameController.text,
-      driverImage: '', // No need to include driverImage
-      id: '', // No need to include id
+      driverImage: '',
+      id: '',
       vehicleNumber: double.parse(_vehicleNumberController.text),
-      distance: 0.0, // No need to include distance
-      location: '', // No need to include location
+      distance: 0,
+      location: _locationController.text,
     );
 
     // Send the product data to Firestore
     _addProductToFirestore(product);
   }
 
-  void _addProductToFirestore(Product product) {
-    // Access Firestore and add the product data to the "product" collection
-    FirebaseFirestore.instance.collection('product').add({
-      'title': product.title,
-      'description': product.description,
-      'image': "assets/v-2.png",
-      'price': product.price,
-      'category': product.category,
-      'rate': 4.3,
-      'vehicletype': product.vehicletype,
-      'numberOfPeople': product.numberOfPeople,
-      'phoneNumber': product.phoneNumber,
-      'driverName': product.driverName,
-      'driverImage': "assets/v-2.png",
-      'id': 'Default ID',
-      // 'count': product.count,
-      'vehicleNumber': product.vehicleNumber,
-      'distance': 2.6,
-      'location': product.location,
-    }).then((value) {
-      // Product added successfully, show a success message or navigate to another page
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Product added successfully')),
+  void _addProductToFirestore(Product product) async {
+    try {
+      // Upload image to Firebase Storage
+      String imageUrl = await _uploadImageToStorage();
+
+      // Construct product data to be stored in Firestore
+      Map<String, dynamic> productData = {
+        'title': product.title,
+        'description': product.description,
+        'image': imageUrl, // Use the uploaded image URL
+        'price': product.price,
+        'category': product.category,
+        'rate': product.rate,
+        'vehicletype': product.vehicletype,
+        'numberOfPeople': product.numberOfPeople,
+        'phoneNumber': product.phoneNumber,
+        'driverName': product.driverName,
+        'driverImage': product.driverImage,
+        'id': product.id,
+        'vehicleNumber': product.vehicleNumber,
+        'distance': product.distance,
+        'location': product.location,
+      };
+
+      // Add product data to Firestore
+      await FirebaseFirestore.instance.collection('product').add(productData);
+
+      // Show success message
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Success'),
+            content: Text('Product added successfully.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
       );
-      // You can navigate to another page or clear the form fields here
-    }).catchError((error) {
-      // Error adding product to Firestore
+    } catch (error) {
+      // Show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to add product: $error')),
       );
-    });
+    }
   }
-}
 
-Widget buildFormField(String label, TextEditingController controller,
-    String? Function(String? value)? validator, IconData prefixIcon) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 10),
-    child: TextFormField(
-      controller: controller,
-      style: TextStyle(fontSize: 18),
-      decoration: InputDecoration(
-        prefixIcon: Icon(prefixIcon, color: kprimaryColor),
-        labelText: label,
-        labelStyle: TextStyle(fontSize: 16, color: kprimaryColor),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: kprimaryColor),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: kprimaryColor, width: 2),
-        ),
-      ),
-      validator: validator,
-    ),
-  );
+  Future<String> _uploadImageToStorage() async {
+    // Upload image to Firebase Storage and return its download URL
+    // Example implementation using Firebase Storage
+    // Replace 'imageFile' with your picked image File
+    // StorageReference storageRef = FirebaseStorage.instance.ref().child('images/${_imageController.text}');
+    // await storageRef.putFile(imageFile);
+    // String downloadUrl = await storageRef.getDownloadURL();
+    // return downloadUrl;
+
+    // For now, return a placeholder URL
+    return 'assets/v-9.png';
+  }
 }

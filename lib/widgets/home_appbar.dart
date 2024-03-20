@@ -2,7 +2,6 @@ import 'package:firebase_2/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({
     super.key,
@@ -20,7 +19,7 @@ class HomeAppBar extends StatelessWidget {
             padding: const EdgeInsets.all(15),
           ),
           iconSize: 30,
-          icon: const Icon(Ionicons.finger_print),
+          icon: const Icon(Ionicons.home_sharp),
         ),
         IconButton(
           onPressed: () {},

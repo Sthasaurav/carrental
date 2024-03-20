@@ -1,4 +1,5 @@
 import 'package:firebase_2/constant.dart';
+import 'package:firebase_2/screen/allproduct.dart';
 
 import 'package:firebase_2/screen/home_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +22,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int currentTab = 2;
   List screens = const [
-    Scaffold(),
+    AllProductPage(),
     Scaffold(),
     HomeScreen(),
     // AddScreen(),
