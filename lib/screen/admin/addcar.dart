@@ -1,9 +1,13 @@
 import 'package:firebase_2/Model/product.dart';
 import 'package:firebase_2/constant.dart';
+import 'package:firebase_2/customui/customtextformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddProductPage extends StatefulWidget {
+  List<String> categories = ['SUV', 'Sedan', 'Hatch-Back', 'Sports'];
+  String? _selectedCategory;
+
   @override
   _AddProductPageState createState() => _AddProductPageState();
 }
@@ -27,7 +31,19 @@ class _AddProductPageState extends State<AddProductPage> {
   TextEditingController _vehicleNumberController = TextEditingController();
   TextEditingController _distanceController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
+  String? _selectedCategory; // Define _selectedCategory here
+  String? _selectedVehicleType;
 
+  final List<String> categories = [
+    'SUV',
+    'Sedan',
+    'Hatch-Back',
+    'Sports',
+  ];
+  final List<String> vehicletype = [
+    'automatic',
+    'manual',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +58,9 @@ class _AddProductPageState extends State<AddProductPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextFormField(
+                CustomForm(
                   controller: _titleController,
-                  decoration: InputDecoration(labelText: 'Title'),
+                  labelText: 'Title',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a title';
@@ -52,9 +68,10 @@ class _AddProductPageState extends State<AddProductPage> {
                     return null;
                   },
                 ),
-                TextFormField(
+                const SizedBox(height: 10),
+                CustomForm(
                   controller: _descriptionController,
-                  decoration: InputDecoration(labelText: 'Description'),
+                  labelText: 'Description',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a description';
@@ -62,19 +79,10 @@ class _AddProductPageState extends State<AddProductPage> {
                     return null;
                   },
                 ),
-                TextFormField(
-                  controller: _imageController,
-                  decoration: InputDecoration(labelText: 'Image'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter an image URL';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
+                const SizedBox(height: 10),
+                CustomForm(
                   controller: _priceController,
-                  decoration: InputDecoration(labelText: 'Price'),
+                  labelText: 'Price',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a price';
@@ -82,39 +90,65 @@ class _AddProductPageState extends State<AddProductPage> {
                     return null;
                   },
                 ),
-                TextFormField(
-                  controller: _categoryController,
-                  decoration: InputDecoration(labelText: 'Category'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a category';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _rateController,
-                  decoration: InputDecoration(labelText: 'Rate'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a rate';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _vehicleTypeController,
+                DropdownButtonFormField(
                   decoration: InputDecoration(labelText: 'Vehicle Type'),
+                  value: _selectedVehicleType,
+                  items: vehicletype.map((type) {
+                    return DropdownMenuItem(
+                      value: type,
+                      child: Text(
+                        type,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedVehicleType = value as String?;
+                    });
+                  },
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a vehicle type';
+                    if (value == null) {
+                      return 'Please select a vehicle type';
                     }
                     return null;
                   },
                 ),
-                TextFormField(
+                const SizedBox(height: 10),
+                DropdownButtonFormField(
+                  decoration: InputDecoration(labelText: 'Category'),
+                  value: _selectedCategory,
+                  items: categories.map((category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(
+                        category,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCategory = value as String?;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a category';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                CustomForm(
                   controller: _numberOfPeopleController,
-                  decoration: InputDecoration(labelText: 'Number of People'),
+                  labelText: 'Number of People',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the number of people';
@@ -122,9 +156,10 @@ class _AddProductPageState extends State<AddProductPage> {
                     return null;
                   },
                 ),
-                TextFormField(
+                const SizedBox(height: 10),
+                CustomForm(
                   controller: _phoneNumberController,
-                  decoration: InputDecoration(labelText: 'Phone Number'),
+                  labelText: 'Phone Number',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a phone number';
@@ -132,9 +167,21 @@ class _AddProductPageState extends State<AddProductPage> {
                     return null;
                   },
                 ),
-                TextFormField(
+                const SizedBox(height: 10),
+                CustomForm(
+                  controller: _vehicleNumberController,
+                  labelText: 'Vehicle Number',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the vehicle number';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                CustomForm(
                   controller: _driverNameController,
-                  decoration: InputDecoration(labelText: 'Driver Name'),
+                  labelText: 'Driver Name',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a driver name';
@@ -142,73 +189,29 @@ class _AddProductPageState extends State<AddProductPage> {
                     return null;
                   },
                 ),
-                TextFormField(
-                  controller: _driverImageController,
-                  decoration: InputDecoration(labelText: 'Driver Image'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a driver image URL';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _idController,
-                  decoration: InputDecoration(labelText: 'ID'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter an ID';
-                    }
-                    return null;
-                  },
-                ),
-                // TextFormField(
-                //   controller: _countController,
-                //   decoration: InputDecoration(labelText: 'Count'),
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return 'Please enter a count';
-                //     }
-                //     return null;
-                //   },
-                // ),
-                TextFormField(
-                  controller: _vehicleNumberController,
-                  decoration: InputDecoration(labelText: 'Vehicle Number'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a vehicle number';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _locationController,
-                  decoration: InputDecoration(labelText: 'location'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a location of vehicle';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _distanceController,
-                  decoration: InputDecoration(labelText: 'Distance'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a distance';
-                    }
-                    return null;
-                  },
-                ),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _submitProduct();
                     }
                   },
-                  child: Text('Submit'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        kprimaryColor, // Change button color to orange
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(10), // Set slight curve
+                    ),
+                    minimumSize: Size(double.infinity, 50), // Set button size
+                  ),
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -223,20 +226,20 @@ class _AddProductPageState extends State<AddProductPage> {
     Product product = Product(
       title: _titleController.text,
       description: _descriptionController.text,
-      image: _imageController.text,
+      image: '',
       price: double.parse(_priceController.text), // Parse price to double
-      category: _categoryController.text,
-      rate: double.parse(_rateController.text),
-      vehicletype: _vehicleTypeController.text,
+      category: _selectedCategory ??
+          '', // Use selected category from dropdown or default to empty string
+      rate: 0.0,
+      vehicletype: _selectedVehicleType ?? '',
       numberOfPeople: int.parse(_numberOfPeopleController.text),
       phoneNumber: _phoneNumberController.text,
       driverName: _driverNameController.text,
-      driverImage: _driverImageController.text,
-      id: _idController.text,
-      // count: int.parse(_countController.text),
+      driverImage: '', // No need to include driverImage
+      id: '', // No need to include id
       vehicleNumber: double.parse(_vehicleNumberController.text),
-      distance: double.parse(_distanceController.text),
-      location: _locationController.text,
+      distance: 0.0, // No need to include distance
+      location: '', // No need to include location
     );
 
     // Send the product data to Firestore
