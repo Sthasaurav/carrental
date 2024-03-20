@@ -128,11 +128,17 @@ class CheckoutScreen extends StatelessWidget {
                               // Add more fields if needed
                             });
 
+                            // TODO: Add logic to initialize payment gateway
+                            // store payment transaction details in Firestore
+
                             // redirect to payment gateway
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PaymentGatewayScreen(),
+                                builder: (context) => PaymentGatewayScreen(
+                                    productID: product.vehicleNumber,
+                                    productName: product.vehicletype,
+                                    productPrice: product.price),
                               ),
                             );
 

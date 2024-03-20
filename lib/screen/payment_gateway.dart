@@ -5,15 +5,24 @@ import 'package:ionicons/ionicons.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
 class PaymentGatewayScreen extends StatelessWidget {
-  const PaymentGatewayScreen({Key? key}) : super(key: key);
+  const PaymentGatewayScreen(
+      {Key? key,
+      required this.productID,
+      required this.productName,
+      required this.productPrice})
+      : super(key: key);
+
+  final productName;
+  final productPrice;
+  final productID;
 
   // create function to pay with khalti
   payWithKhaltiInApp(BuildContext context) {
     KhaltiScope.of(context).pay(
       config: PaymentConfig(
-        amount: 10, //in paisa
-        productIdentity: 'Product Id',
-        productName: 'Product Name',
+        amount: (productPrice * 100).toInt(), //in paisa
+        productIdentity: productID.toString(),
+        productName: productName,
         mobileReadOnly: false,
       ),
       preferences: [
@@ -22,7 +31,7 @@ class PaymentGatewayScreen extends StatelessWidget {
       onSuccess: (PaymentSuccessModel data) {
         // Handle payment success
         // You can navigate to the confirmation screen here
-
+        // TODO: store transaction details in database
         print("Payment Success");
         Navigator.push(
           context,
@@ -32,7 +41,6 @@ class PaymentGatewayScreen extends StatelessWidget {
       onFailure: (PaymentFailureModel data) {
         // Handle payment failure
         // You can show an error message or retry option here
-        print("Payment Failure========");
         // print data
         print(data.toString());
       },
@@ -93,22 +101,11 @@ class PaymentGatewayScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     // Display order details such as product, rental dates, etc.
-                    buildOrderDetail("From           ", ""),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Car Model     ", ""),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Category       ", ""),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Amount         ", "Rs."),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Vehicle Type ", ""),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Driver's Name", ""),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Phone No.     ", ""),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Vehicle Number         ", ""),
-                    const SizedBox(height: 20),
+                    Image.asset(
+                      "assets/khalti-logo.png",
+                      width: 200,
+                      height: 150,
+                    ),
                     ElevatedButton(
                       // Implement the logic to complete the booking
                       // This could involve processing payment, updating database, etc.
@@ -126,7 +123,7 @@ class PaymentGatewayScreen extends StatelessWidget {
                         minimumSize: const Size(double.infinity, 50),
                       ),
                       child: const Text(
-                        "Complete Booking",
+                        "Place Order",
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
