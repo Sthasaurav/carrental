@@ -61,10 +61,10 @@ class _AddProductPageState extends State<AddProductPage> {
               children: [
                 CustomForm(
                   controller: _titleController,
-                  labelText: 'Title',
+                  labelText: 'Model',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a title';
+                      return 'Please enter a Model';
                     }
                     return null;
                   },

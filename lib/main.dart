@@ -8,7 +8,9 @@ import 'package:firebase_2/screen/allproduct.dart';
 // import 'package:firebase_2/Model/product.dart';
 // import 'package:firebase_2/screen/home_screen.dart';
 import 'package:firebase_2/screen/main_screen.dart';
+import 'package:firebase_2/widgets/Searchpage.dart';
 import 'dart:math';
+import 'package:firebase_2/widgets/product_card.dart';
 
 import 'package:firebase_2/Model/userlocation.dart';
 import 'package:firebase_2/view/login.dart';
@@ -39,7 +41,6 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  
   MyApp({Key? key}) : super(key: key);
 
   @override
@@ -96,7 +97,9 @@ class _MyAppState extends State<MyApp> {
               // home: signUpProvider.isUserExist ? MainScreen() : Login(),
 
               // home: AddProductPage()
-              home: MainScreen()
+              home:
+                  // ProductSearch()
+                  Login()
 
               //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
               // home: signUpProvider.isUserExist ? SignUp() : Login(),

@@ -149,7 +149,8 @@ class _SignUpState extends State<SignUp> {
               } else if (!RegExp(
                       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')
                   .hasMatch(value)) {
-                return 'Password must contain at least 8 characters, including uppercase, lowercase, numbers, and special characters.';
+                return 'Must contain 8 characters, including uppercase, '
+                    'lowercase,numbers, and special characters.';
               }
               return null;
             },
@@ -173,40 +174,18 @@ class _SignUpState extends State<SignUp> {
               onPrimary: Colors.white,
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  // Register the user with Firebase
-                  User? user = await _authService.registerWithEmailAndPassword(
-                    signUpProvider.email!,
-                    signUpProvider.password!,
-                    signUpProvider.name!,
-                    signUpProvider.address!,
-                    signUpProvider.phone!,
-                  );
-
-                  if (user != null) {
-                    // Registration successful
-                    Helper.snackBarMessage("Successfully Registered", context);
-                    Navigator.push(
+                  await signUpProvider.saveCredentials();
+                  if (signUpProvider.signUpStatus == NetworkStatus.success) {
+                    Helper.snackBarMessage("Registered Successfully", context);
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => Login()),
                     );
-                  } else {
-                    // Registration failed
-                    Helper.snackBarMessage("Registration Failed", context);
+                  } else if (signUpProvider.signUpStatus ==
+                      NetworkStatus.error) {
+                    Helper.snackBarMessage("Account already exist", context);
                   }
                 }
-                // if (_formKey.currentState!.validate()) {
-                //   await signUpProvider.saveCredentials();
-                //   if (signUpProvider.signUpStatus == NetworkStatus.success) {
-                //     Helper.snackBarMessage("Registered Successfully", context);
-                //     Navigator.pushReplacement(
-                //       context,
-                //       MaterialPageRoute(builder: (context) => Login()),
-                //     );
-                //   } else if (signUpProvider.signUpStatus ==
-                //       NetworkStatus.error) {
-                //     Helper.snackBarMessage("Registration Failed", context);
-                //   }
-                // }
               },
               child: Text(
                 "Submit",

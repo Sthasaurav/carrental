@@ -68,6 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     productsList.add(product);
                   }
                 });
+                productsList.sort((a, b) => a.distance.compareTo(b.distance));
 
                 return ListView.builder(
                   itemCount: productsList.length,

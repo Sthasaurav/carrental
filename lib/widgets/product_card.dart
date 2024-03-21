@@ -74,7 +74,7 @@ class ProductCard extends StatelessWidget {
                           size: 15,
                           color: Colors.blue,
                         ),
-                        SizedBox(width: 5),
+                        // SizedBox(width: 5),
                         Text(
                           '${product.vehicletype}',
                           style: const TextStyle(
@@ -93,7 +93,7 @@ class ProductCard extends StatelessWidget {
                             size: 15,
                             color: Colors.blue,
                           ),
-                          SizedBox(width: 5),
+                          // SizedBox(width: 5),
                           Text(
                             '${product.distance} km',
                             style: const TextStyle(
@@ -131,7 +131,7 @@ class ProductCard extends StatelessWidget {
                             size: 18,
                             color: Colors.blue,
                           ),
-                          SizedBox(width: 5),
+                          // SizedBox(width: 5),
                           Text(
                             '${product.numberOfPeople} \Seat',
                             style: const TextStyle(
