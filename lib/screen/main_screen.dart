@@ -2,7 +2,6 @@ import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/screen/allproduct.dart';
 
 import 'package:firebase_2/screen/home_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ionicons/ionicons.dart';
@@ -77,20 +76,20 @@ class _MainScreenState extends State<MainScreen> {
             ),
             IconButton(
               onPressed: () => setState(() {
-                currentTab = 3;
+                currentTab = 2;
               }),
               icon: Icon(
                 Ionicons.cart_outline,
-                color: currentTab == 3 ? kprimaryColor : Colors.grey.shade400,
+                color: currentTab == 2 ? kprimaryColor : Colors.grey.shade400,
               ),
             ),
             IconButton(
               onPressed: () => setState(() {
-                currentTab = 4;
+                currentTab = 3;
               }),
               icon: Icon(
                 Ionicons.person_outline,
-                color: currentTab == 4 ? kprimaryColor : Colors.grey.shade400,
+                color: currentTab == 3 ? kprimaryColor : Colors.grey.shade400,
               ),
             ),
           ],

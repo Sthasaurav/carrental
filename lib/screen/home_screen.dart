@@ -51,6 +51,7 @@ class HomeScreen extends StatelessWidget {
                       .limit(6) // Limit to only 6 products
                       .snapshots(),
                   builder: (context, snapshot) {
+                    print("Snapshot: $snapshot");
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }

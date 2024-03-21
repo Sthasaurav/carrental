@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_2/screen/payment_gateway.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_2/Model/product.dart';
 import 'package:firebase_2/constant.dart';
@@ -94,7 +95,7 @@ class CheckoutScreen extends StatelessWidget {
                             .get();
 
                         // If any matching document is found, show the message
-                        if (querySnapshot.docs.isNotEmpty) {
+                        if (!querySnapshot.docs.isNotEmpty) {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -116,24 +117,39 @@ class CheckoutScreen extends StatelessWidget {
                           try {
                             // Proceed with the booking logic
                             // Add the booking data to Firestore
-                            await firestore.collection('booking').add({
-                              'title': product.title,
-                              'category': product.category,
-                              'price': product.price,
-                              'vehicletype': product.vehicletype,
-                              'driverName': product.driverName,
-                              'phoneNumber': product.phoneNumber,
-                              'vehicle_no': product.vehicleNumber,
-                              // Add more fields if needed
-                            });
+                            // await firestore.collection('booking').add({
+                            //   'title': product.title,
+                            //   'category': product.category,
+                            //   'price': product.price,
+                            //   'vehicletype': product.vehicletype,
+                            //   'driverName': product.driverName,
+                            //   'phoneNumber': product.phoneNumber,
+                            //   'vehicle_no': product.vehicleNumber,
+                            //   // Add more fields if needed
+                            // });
 
-                            // After successful booking, navigate to confirmation screen
+                            // TODO: Add logic to initialize payment gateway
+                            // store payment transaction details in Firestore
+
+                            // redirect to payment gateway
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ConfirmationScreen(),
+                                builder: (context) => PaymentGatewayScreen(
+                                    product: product,
+                                    productID: product.vehicleNumber,
+                                    productName: product.vehicletype,
+                                    productPrice: product.price),
                               ),
                             );
+
+                            // // After successful booking, navigate to confirmation screen
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ConfirmationScreen(),
+                            //   ),
+                            // );
                           } catch (e) {
                             // Handle errors, such as Firestore write errors
                             print("Error adding booking data: $e");
@@ -142,7 +158,7 @@ class CheckoutScreen extends StatelessWidget {
                       },
 
                       style: ElevatedButton.styleFrom(
-                        primary: kprimaryColor,
+                        backgroundColor: kprimaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -222,7 +238,7 @@ class ConfirmationScreen extends StatelessWidget {
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: kprimaryColor,
+                  backgroundColor: kprimaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

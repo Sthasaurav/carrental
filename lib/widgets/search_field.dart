@@ -56,14 +56,9 @@ class SearchField extends StatelessWidget {
                 color: Colors.grey,
               ),
               IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SearchScreen()),
-                  );
-                },
+                onPressed: () {},
                 icon: const Icon(
-                  Ionicons.options_outline,
+                  Ionicons.car_sport_outline,
                   color: Colors.grey,
                 ),
               ),
