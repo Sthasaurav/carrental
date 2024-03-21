@@ -11,6 +11,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_2/screen/admin/admin_screen.dart';
+
 import 'package:provider/provider.dart';
 import '../api/networkstatus.dart';
 import '../helper/helper.dart';
@@ -38,7 +40,7 @@ class _LoginState extends State<Login> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: 10), // Add spacing between AppBar and text
+                  SizedBox(height: 10),
                   Padding(
                     padding: EdgeInsets.only(top: 16),
                     child: Center(
@@ -77,55 +79,59 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 45),
                   Form(
                     key: _formKey,
-                    child: CustomForm(
-                      prefixIcon: Icon(
-                        Icons.email,
-                        color: kprimaryColor,
-                      ),
-                      onChanged: (value) {
-                        signUpProvider.email = value;
-                      },
-                      labelText: emailStr,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return emailValidationStr;
-                        } else {
-                          return null;
-                        }
-                      },
+                    child: Column(
+                      children: [
+                        CustomForm(
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: kprimaryColor,
+                          ),
+                          onChanged: (value) {
+                            signUpProvider.email = value;
+                          },
+                          labelText: emailStr,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return emailValidationStr;
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        CustomForm(
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: kprimaryColor,
+                          ),
+                          onChanged: (value) {
+                            signUpProvider.password = value;
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return passwordValidationStr;
+                            } else {
+                              return null;
+                            }
+                          },
+                          labelText: passwordStr,
+                          obscureText:
+                              signUpProvider.showPassword ? false : true,
+                          suffixIcon: signUpProvider.showPassword
+                              ? IconButton(
+                                  onPressed: () {
+                                    signUpProvider.passwordVisibility(false);
+                                  },
+                                  icon: const Icon(Icons.visibility))
+                              : IconButton(
+                                  onPressed: () {
+                                    signUpProvider.passwordVisibility(true);
+                                  },
+                                  icon: const Icon(Icons.visibility_off)),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CustomForm(
-                      prefixIcon: Icon(
-                        Icons.lock,
-                        color: kprimaryColor,
-                      ),
-                      onChanged: (value) {
-                        signUpProvider.password = value;
-                      },
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return passwordValidationStr;
-                        } else {
-                          return null;
-                        }
-                      },
-                      labelText: passwordStr,
-                      obscureText: signUpProvider.showPassword ? false : true,
-                      suffixIcon: signUpProvider.showPassword
-                          ? IconButton(
-                              onPressed: () {
-                                signUpProvider.passwordVisibility(false);
-                              },
-                              icon: const Icon(Icons.visibility))
-                          : IconButton(
-                              onPressed: () {
-                                signUpProvider.passwordVisibility(true);
-                              },
-                              icon: const Icon(Icons.visibility_off))),
                   SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
@@ -147,12 +153,27 @@ class _LoginState extends State<Login> {
                           if (signUpProvider.logInStatus ==
                                   NetworkStatus.success &&
                               signUpProvider.isUserExist) {
-                            Helper.snackBarMessage(
-                                "Successfully Logged in", context);
-                            Navigator.of(context).pushAndRemoveUntil(
+                            // Check if email and password match the admin credentials
+                            if (signUpProvider.email == 'admin8989@gmail.com' &&
+                                signUpProvider.password == '@dmin5835J') {
+                              // Redirect to another page (ProfileScreen)
+                              Navigator.pushAndRemoveUntil(
+                                context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainScreen()),
-                                (Route<dynamic> route) => false);
+                                  builder: (context) => AdminScreen(),
+                                ),
+                                (Route<dynamic> route) => false,
+                              );
+                            } else {
+                              // Redirect to MainScreen for non-admin users
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MainScreen(),
+                                ),
+                                (Route<dynamic> route) => false,
+                              );
+                            }
                           } else if (signUpProvider.logInStatus ==
                                   NetworkStatus.success &&
                               !signUpProvider.isUserExist) {
@@ -175,13 +196,9 @@ class _LoginState extends State<Login> {
                       primary: kprimaryColor,
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Divider(),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: kprimaryColor,

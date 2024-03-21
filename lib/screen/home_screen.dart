@@ -47,6 +47,8 @@ class HomeScreen extends StatelessWidget {
                 StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection("product")
+                      .orderBy("distance") // Order products by distance
+                      .limit(6) // Limit to only 6 products
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -74,16 +76,10 @@ class HomeScreen extends StatelessWidget {
                       ),
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
-                        try {
-                          Map<String, dynamic> data = snapshot.data!.docs[index]
-                              .data() as Map<String, dynamic>;
-                          print("Data for index $index: $data");
-                          Product product = Product.fromMap(data);
-                          return ProductCard(product: product);
-                        } catch (e) {
-                          print("Error processing data for index $index: $e");
-                          return Container(); // Skip invalid data
-                        }
+                        DocumentSnapshot document = snapshot.data!.docs[index];
+                        Product product = Product.fromMap(
+                            document.data() as Map<String, dynamic>);
+                        return ProductCard(product: product);
                       },
                     );
                   },

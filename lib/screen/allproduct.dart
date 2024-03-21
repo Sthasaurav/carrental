@@ -1,15 +1,13 @@
-import 'package:firebase_2/Model/category.dart';
-import 'package:firebase_2/Model/product.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_2/Model/product.dart';
 import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/widgets/home_appbar.dart';
 import 'package:firebase_2/widgets/product_card.dart';
 import 'package:firebase_2/widgets/search_field.dart';
-import 'package:firebase_2/widgets/categories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AllProductPage  extends StatelessWidget {
-  const AllProductPage ({Key? key}) : super(key: key);
+class AllProductPage extends StatelessWidget {
+  const AllProductPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +41,7 @@ class AllProductPage  extends StatelessWidget {
                 const SizedBox(height: 10),
                 StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
-                      .collection("addproducts")
+                      .collection("product")
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -60,6 +58,15 @@ class AllProductPage  extends StatelessWidget {
                               Text('No product details found in Firestore.'));
                     }
 
+                    // Sort the products by distance from the user
+                    List<DocumentSnapshot> documents = snapshot.data!.docs;
+                    documents.sort((a, b) {
+                      // Access distance field from documents and compare
+                      double distanceA = a.get('distance');
+                      double distanceB = b.get('distance');
+                      return distanceA.compareTo(distanceB);
+                    });
+
                     return GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -69,11 +76,11 @@ class AllProductPage  extends StatelessWidget {
                         crossAxisSpacing: 8,
                         mainAxisSpacing: 10,
                       ),
-                      itemCount: snapshot.data!.docs.length,
+                      itemCount: documents.length,
                       itemBuilder: (context, index) {
                         try {
-                          Map<String, dynamic> data = snapshot.data!.docs[index]
-                              .data() as Map<String, dynamic>;
+                          Map<String, dynamic> data =
+                              documents[index].data() as Map<String, dynamic>;
                           print("Data for index $index: $data");
                           Product product = Product.fromMap(data);
                           return ProductCard(product: product);

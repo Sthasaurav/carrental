@@ -88,22 +88,23 @@ class _MyAppState extends State<MyApp> {
       child: Consumer<SignUpProvider>(
         builder: (context, signUpProvider, child) {
           return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                useMaterial3: true,
-              ),
-              // home: signUpProvider.isUserExist ? MainScreen() : Login(),
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            // home: signUpProvider.isUserExist ? MainScreen() : Login(),
 
-              // home: AddProductPage()
-              home:
-                  // ProductSearch()
-                  Login()
+            // home: AddProductPage()
+            // home:
+            //     // ProductSearch()
+            //     Login()
 
-              //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
-              // home: signUpProvider.isUserExist ? SignUp() : Login(),
-              );
+            //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
+            // home: signUpProvider.isUserExist ? MainScreen() : Login(),
+            home: MainScreen(),
+          );
         },
       ),
     );
