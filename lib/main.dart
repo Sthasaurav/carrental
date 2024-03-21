@@ -15,6 +15,8 @@ import 'package:firebase_2/widgets/product_card.dart';
 import 'package:firebase_2/Model/userlocation.dart';
 import 'package:firebase_2/view/login.dart';
 import 'package:firebase_2/view/signup.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
+
 // import 'package:firebase_2/view/credentialdetails.dart';
 // import 'package:firebase_2/view/login.dart';
 // import 'package:firebase_2/view/otp.dart';

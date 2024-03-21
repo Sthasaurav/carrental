@@ -1,6 +1,5 @@
-package com.sujan.app
+package com.sujan.carrental
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity() {
-}
+class MainActivity: FlutterActivity()

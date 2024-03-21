@@ -13,7 +13,7 @@ class Custombutton extends StatelessWidget {
     return ElevatedButton(
         onPressed: onPressed,
         child: child,
-        style:
-            ElevatedButton.styleFrom(primary: primary, onPrimary: onPrimary));
+        style: ElevatedButton.styleFrom(
+            foregroundColor: onPrimary, backgroundColor: primary));
   }
 }
