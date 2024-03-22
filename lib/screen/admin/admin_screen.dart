@@ -1,7 +1,9 @@
 import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/screen/admin/addcar.dart';
 import 'package:firebase_2/screen/admin/adminprofile.dart';
+import 'package:firebase_2/screen/admin/curd.dart';
 import 'package:firebase_2/screen/admin/order_screen.dart';
+import 'package:firebase_2/screen/admin/productedit.dart';
 import 'package:firebase_2/screen/admin/test.dart';
 
 import 'package:firebase_2/screen/home_screen.dart';

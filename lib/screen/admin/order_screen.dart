@@ -98,7 +98,7 @@ class _OrderPageState extends State<OrderPage> {
                   children: [
                     Text('Category: ${bookingData['category']}'),
                     Text('Price: \Rs.${bookingData['price']}'),
-                    Text('Vehicle No.: ${bookingData['vehicle_no']}'),
+                    Text('Vehicle No.:Ba Pa ${bookingData['vehicle_no']}'),
                   ],
                 ),
                 trailing: ElevatedButton(
