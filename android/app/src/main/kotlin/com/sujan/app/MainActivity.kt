@@ -1,4 +1,4 @@
-ppackage com.sujan.carrental
+package com.sujan.app
 
 import io.flutter.embedding.android.FlutterActivity
 

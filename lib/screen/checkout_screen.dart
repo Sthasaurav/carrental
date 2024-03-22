@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_2/Model/product.dart';
 import 'package:firebase_2/constant.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CheckoutScreen extends StatelessWidget {
   final Product product;
@@ -60,7 +61,7 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     // Display order details such as product, rental dates, etc.
-                    buildOrderDetail("From           ", ""),
+                    buildOrderDetail("From           ", getEmailDomain()),
                     const SizedBox(height: 15),
                     buildOrderDetail("Car Model     ", product.title),
                     const SizedBox(height: 15),
@@ -95,7 +96,7 @@ class CheckoutScreen extends StatelessWidget {
                             .get();
 
                         // If any matching document is found, show the message
-                        if (!querySnapshot.docs.isNotEmpty) {
+                        if (querySnapshot.docs.isNotEmpty) {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -104,10 +105,8 @@ class CheckoutScreen extends StatelessWidget {
                                   'Sorry, this vehicle is already booked, try renting any other vehicle.'),
                               actions: [
                                 TextButton(
-                                  // onPressed: () => Navigator.pop(context),
                                   onPressed: () => Navigator.popUntil(
                                       context, (route) => route.isFirst),
-
                                   child: Text('OK'),
                                 ),
                               ],
@@ -117,39 +116,30 @@ class CheckoutScreen extends StatelessWidget {
                           try {
                             // Proceed with the booking logic
                             // Add the booking data to Firestore
-                            // await firestore.collection('booking').add({
-                            //   'title': product.title,
-                            //   'category': product.category,
-                            //   'price': product.price,
-                            //   'vehicletype': product.vehicletype,
-                            //   'driverName': product.driverName,
-                            //   'phoneNumber': product.phoneNumber,
-                            //   'vehicle_no': product.vehicleNumber,
-                            //   // Add more fields if needed
-                            // });
+                            await firestore.collection('booking').add({
+                              'title': product.title,
+                              'category': product.category,
+                              'price': product.price,
+                              'vehicletype': product.vehicletype,
+                              'driverName': product.driverName,
+                              'phoneNumber': product.phoneNumber,
+                              'vehicle_no': product.vehicleNumber,
+                              'from': getEmailDomain(), // Add "From" data
+                              // Add more fields if needed
+                            });
 
-                            // TODO: Add logic to initialize payment gateway
-                            // store payment transaction details in Firestore
-
-                            // redirect to payment gateway
+                            // Redirect to payment gateway
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PaymentGatewayScreen(
-                                    product: product,
-                                    productID: product.vehicleNumber,
-                                    productName: product.vehicletype,
-                                    productPrice: product.price),
+                                  product: product,
+                                  productID: product.vehicleNumber,
+                                  productName: product.vehicletype,
+                                  productPrice: product.price,
+                                ),
                               ),
                             );
-
-                            // // After successful booking, navigate to confirmation screen
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => ConfirmationScreen(),
-                            //   ),
-                            // );
                           } catch (e) {
                             // Handle errors, such as Firestore write errors
                             print("Error adding booking data: $e");
@@ -181,6 +171,16 @@ class CheckoutScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Function to get the email domain from the logged-in user
+  String getEmailDomain() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.email != null) {
+      return user.email!.split('@').last;
+    } else {
+      return 'Unknown';
+    }
   }
 
   Widget buildOrderDetail(String label, String value) {

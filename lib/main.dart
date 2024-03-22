@@ -4,10 +4,14 @@ import 'package:firebase_2/screen/admin/addcar.dart';
 import 'package:firebase_2/screen/admin/edit.dart';
 import 'package:firebase_2/screen/admin/order_screen.dart';
 import 'package:firebase_2/screen/admin/admin_screen.dart';
+import 'package:firebase_2/screen/admin/test.dart';
 import 'package:firebase_2/screen/allproduct.dart';
 // import 'package:firebase_2/Model/product.dart';
 // import 'package:firebase_2/screen/home_screen.dart';
 import 'package:firebase_2/screen/main_screen.dart';
+import 'package:firebase_2/view/editprofile.dart';
+import 'package:firebase_2/view/profile.dart';
+import 'package:firebase_2/view/profile1.dart';
 import 'package:firebase_2/widgets/Searchpage.dart';
 import 'dart:math';
 import 'package:firebase_2/widgets/product_card.dart';
@@ -89,7 +93,7 @@ class _MyAppState extends State<MyApp> {
       child: Consumer<SignUpProvider>(
         builder: (context, signUpProvider, child) {
           return KhaltiScope(
-              publicKey: "test_public_key_318d23f7c4ec42c5924442004826021c",
+              publicKey: "test_public_key_c2f1d4b63b5245f4992856f1252c3298",
               builder: (context, navKey) {
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
@@ -108,7 +112,9 @@ class _MyAppState extends State<MyApp> {
 
                   //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
                   // home: signUpProvider.isUserExist ? MainScreen() : Login(),
+                  // home: MainScreen(),
                   home: MainScreen(),
+                  // AdminScreen(),
                   navigatorKey: navKey,
                   localizationsDelegates: const [
                     KhaltiLocalizations.delegate,

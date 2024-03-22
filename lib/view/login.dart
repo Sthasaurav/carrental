@@ -6,6 +6,7 @@ import 'package:firebase_2/provider/signupprovider.dart';
 import 'package:firebase_2/screen/main_screen.dart';
 import 'package:firebase_2/screen/profile/profile_screen.dart';
 import 'package:firebase_2/util/string_const.dart';
+import 'package:firebase_2/view/forgotpassword.dart';
 import 'package:firebase_2/view/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +136,10 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
-                      // Handle forgot password action
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ForgotPasswordPage()));
                     },
                     child: Text(
                       'Forgot Password?',
@@ -199,22 +203,23 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 20),
                   Divider(),
                   SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: kprimaryColor,
-                      onPrimary: Colors.white,
-                    ),
-                    onPressed: () {
-                      googleLogin();
-                    },
-                    child: SizedBox(
-                      height: 40,
-                      width: 220,
+                  SizedBox(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: kprimaryColor,
+                        onPrimary: Colors.white,
+                      ),
+                      onPressed: () {
+                        googleLogin();
+                      },
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(FontAwesomeIcons.google),
                           SizedBox(
-                            width: 20,
+                            width: 10,
                           ),
                           Text(
                             "Login with google",

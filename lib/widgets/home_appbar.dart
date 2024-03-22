@@ -20,9 +20,12 @@ class _HomeAppBarState extends State<HomeAppBar> {
   @override
   void initState() {
     super.initState();
-    user = FirebaseAuth.instance.currentUser;
-
+    _getCurrentUser();
     _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentUser() async {
+    user = FirebaseAuth.instance.currentUser;
   }
 
   Future<void> _getCurrentLocation() async {

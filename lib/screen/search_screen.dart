@@ -60,11 +60,13 @@ class _SearchScreenState extends State<SearchScreen> {
                       doc.data() as Map<String, dynamic>;
                   Product product = Product.fromMap(data);
 
-                  // Check if the product title contains the search text
+                  // Check if the product title or category contains the search text
                   if (_searchController.text.isNotEmpty &&
-                      product.title
-                          .toLowerCase()
-                          .contains(_searchController.text.toLowerCase())) {
+                      (product.title
+                              .toLowerCase()
+                              .contains(_searchController.text.toLowerCase()) ||
+                          product.category.toLowerCase().contains(
+                              _searchController.text.toLowerCase()))) {
                     productsList.add(product);
                   }
                 });

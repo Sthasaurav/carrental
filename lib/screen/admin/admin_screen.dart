@@ -1,6 +1,8 @@
 import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/screen/admin/addcar.dart';
+import 'package:firebase_2/screen/admin/adminprofile.dart';
 import 'package:firebase_2/screen/admin/order_screen.dart';
+import 'package:firebase_2/screen/admin/test.dart';
 
 import 'package:firebase_2/screen/home_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,11 +22,13 @@ class _AdminScreenState extends State<AdminScreen> {
   List screens = [
     // Scaffold(),
     AddProductPage(),
-    Scaffold(),
+    AdminProductEditScreen(),
 
     OrderPage(),
+
     // AddScreen(),
     Scaffold(),
+    ProfileSaurav(),
   ];
 
   @override
@@ -64,24 +68,24 @@ class _AdminScreenState extends State<AdminScreen> {
                 color: currentTab == 0 ? kprimaryColor : Colors.grey.shade400,
               ),
             ),
-            // IconButton(
-            //   onPressed: () => setState(() {
-            //     currentTab = 1;
-            //   }),
-            //   icon: Icon(
-            //     Ionicons.heart_outline,
-            //     color: currentTab == 1 ? kprimaryColor : Colors.grey.shade400,
-            //   ),
-            // ),
-            // IconButton(
-            //   onPressed: () => setState(() {
-            //     currentTab = 3;
-            //   }),
-            //   icon: Icon(
-            //     Ionicons.cart_outline,
-            //     color: currentTab == 3 ? kprimaryColor : Colors.grey.shade400,
-            //   ),
-            // ),
+            IconButton(
+              onPressed: () => setState(() {
+                currentTab = 1;
+              }),
+              icon: Icon(
+                Ionicons.book_outline,
+                color: currentTab == 1 ? kprimaryColor : Colors.grey.shade400,
+              ),
+            ),
+            IconButton(
+              onPressed: () => setState(() {
+                currentTab = 3;
+              }),
+              icon: Icon(
+                Ionicons.cart_outline,
+                color: currentTab == 3 ? kprimaryColor : Colors.grey.shade400,
+              ),
+            ),
             IconButton(
               onPressed: () => setState(() {
                 currentTab = 4;

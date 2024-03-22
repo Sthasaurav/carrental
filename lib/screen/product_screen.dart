@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../helper/helper.dart';
+
 class ProductScreen extends StatefulWidget {
   final Product product;
   const ProductScreen({Key? key, required this.product}) : super(key: key);
@@ -157,13 +159,16 @@ class ProductInfo extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 5),
-                const Text(
-                  "(11 Reviews)",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
+                IconButton(
+                  onPressed: () {
+                    Helper.launchMaps("${product.location}");
+                  },
+                  icon: Icon(
+                    Icons.location_on,
+                    size: 20,
+                    color: Colors.blue,
                   ),
-                )
+                ),
               ],
             ),
           ],
@@ -286,8 +291,6 @@ class ProductDescription extends StatelessWidget {
               ),
             );
           },
-
-
           style: ElevatedButton.styleFrom(
             backgroundColor: kprimaryColor, // Change button color to orange
             shape: RoundedRectangleBorder(
