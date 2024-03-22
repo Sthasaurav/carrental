@@ -113,7 +113,7 @@ class _MyAppState extends State<MyApp> {
                   //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
                   // home: signUpProvider.isUserExist ? MainScreen() : Login(),
                   // home: MainScreen(),
-                  home: MainScreen(),
+                  home: AdminScreen(),
                   // AdminScreen(),
                   navigatorKey: navKey,
                   localizationsDelegates: const [
