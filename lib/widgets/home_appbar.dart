@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,11 +14,14 @@ class HomeAppBar extends StatefulWidget {
 }
 
 class _HomeAppBarState extends State<HomeAppBar> {
+  User? user;
   String _currentLocation = 'Fetching location...';
 
   @override
   void initState() {
     super.initState();
+    user = FirebaseAuth.instance.currentUser;
+
     _getCurrentLocation();
   }
 
@@ -54,24 +58,17 @@ class _HomeAppBarState extends State<HomeAppBar> {
       children: [
         Column(
           children: [
-            RichText(
-              text: TextSpan(
-                text: ' Welcome , ',
-                style: TextStyle(
-                  fontSize: 26,
-                  color: Colors.black,
-                ),
-                children: [
-                  TextSpan(
-                    text: "",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: kprimaryColor,
-                    ),
-                  ),
-                ],
-              ),
+            Text(
+              "Welcome,",
+              style: TextStyle(color: Colors.black, fontSize: 22),
             ),
+            Row(
+              children: [
+                Text("${user?.displayName ?? 'User'}", //welcome wala part
+
+                    style: TextStyle(fontSize: 15, color: Colors.black))
+              ],
+            )
           ],
         ),
         Container(
