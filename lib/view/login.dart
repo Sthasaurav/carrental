@@ -203,35 +203,35 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 20),
                   Divider(),
                   SizedBox(height: 20),
-                  SizedBox(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: kprimaryColor,
-                        onPrimary: Colors.white,
-                      ),
-                      onPressed: () {
-                        googleLogin();
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(FontAwesomeIcons.google),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Login with google",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 30),
+                  // SizedBox(
+                  //   height: 50,
+                  //   width: MediaQuery.of(context).size.width * 0.9,
+                  //   child: ElevatedButton(
+                  //     style: ElevatedButton.styleFrom(
+                  //       primary: kprimaryColor,
+                  //       onPrimary: Colors.white,
+                  //     ),
+                  //     onPressed: () {
+                  //       googleLogin();
+                  //     },
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Icon(FontAwesomeIcons.google),
+                  //         SizedBox(
+                  //           width: 10,
+                  //         ),
+                  //         Text(
+                  //           "Login with google",
+                  //           style: TextStyle(
+                  //             fontSize: 18,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 30),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(

@@ -96,28 +96,29 @@ class _OrderPageState extends State<OrderPage> {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text('From: ${bookingData['from']}'),
                     Text('Category: ${bookingData['category']}'),
                     Text('Price: \Rs.${bookingData['price']}'),
                     Text('Vehicle No.:Ba Pa ${bookingData['vehicle_no']}'),
                   ],
                 ),
-                trailing: ElevatedButton(
-                  onPressed:
-                      isAccepted ? null : () => _acceptBooking(documentId),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isAccepted ? Colors.grey : kprimaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: Text(
-                    isAccepted ? "Accepted" : "Accept",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: isAccepted ? Colors.black : Colors.white,
-                    ),
-                  ),
-                ),
+                // trailing: ElevatedButton(
+                //   onPressed:
+                //       isAccepted ? null : () => _acceptBooking(documentId),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: isAccepted ? Colors.grey : kprimaryColor,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(10.0),
+                //     ),
+                //   ),
+                //   child: Text(
+                //     isAccepted ? "Accepted" : "Accept",
+                //     style: TextStyle(
+                //       fontSize: 14,
+                //       color: isAccepted ? Colors.black : Colors.white,
+                //     ),
+                //   ),
+                // ),
               ),
             );
           },

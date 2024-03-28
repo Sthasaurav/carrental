@@ -112,8 +112,8 @@ class _MyAppState extends State<MyApp> {
 
                   //  signUpProvider.isUserExist ? MainScreen() : SignUp(),
                   // home: signUpProvider.isUserExist ? MainScreen() : Login(),
+                  home: MainScreen(),
                   // home: MainScreen(),
-                  home: AdminScreen(),
                   // AdminScreen(),
                   navigatorKey: navKey,
                   localizationsDelegates: const [
@@ -309,9 +309,8 @@ class _MyAppState extends State<MyApp> {
       for (int i = 0; i < productLatitudeList.length; i++) {
         double? productLatitude = productLatitudeList[i];
         double? productLongitude = productLongitudeList[i];
-
         if (productLatitude != null && productLongitude != null) {
-          double distance = _calculateHaversineDistance(
+          double distance = greatCircleDistance(
             productLatitude,
             productLongitude,
             userLatitude!,
@@ -397,3 +396,56 @@ class _MyAppState extends State<MyApp> {
     }
   }
 }
+
+double greatCircleDistance(double lat1, double lon1, double lat2, double lon2) {
+  const double R = 6371; // Radius of the Earth in kilometers
+
+  // Convert latitude and longitude from degrees to radians
+  double lat1Rad = toRadians(lat1);
+  double lon1Rad = toRadians(lon1);
+  double lat2Rad = toRadians(lat2);
+  double lon2Rad = toRadians(lon2);
+
+  // Calculate the difference between latitudes and longitudes
+  double dLat = lat2Rad - lat1Rad;
+  double dLon = lon2Rad - lon1Rad;
+
+  // Calculate the distance using the Great Circle Distance formula
+  double a = sin(dLat / 2) * sin(dLat / 2) +
+      cos(lat1Rad) * cos(lat2Rad) * sin(dLon / 2) * sin(dLon / 2);
+  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+  double distance = R * c;
+
+  return distance;
+}
+
+double toRadians(double degree) {
+  return degree * pi / 180;
+}
+  // void calculategreatcircleDistance() {
+  //   if (productLatitudeList.isNotEmpty &&
+  //       userLatitude != null &&
+  //       userLongitude != null) {
+  //     for (Product 0; i < productLatitudeList.length; i++) {
+  //       double? pluProductitude = productLatitudeList[i];
+  //       double? productLongitude = productLatitudeList[i];
+
+  //       if (productLatitude != null && productLongitude != null) {
+  //         double distance = greatCircleDistance(
+  //           productLatitude,
+  //           productLongitude,
+  //           userLatitude!,
+  //           userLongitude!,
+  //         );
+
+  //         print('GreatCircleDistance from product $i to user: $distance km');
+
+  //         // Update the Firestore document with the calculated distance
+  //      //   _updateDistanceInFirestore(i, distance);
+  //       }
+  //     }
+  //   } else {
+  //     print('No product locations available or user location missing.');
+  //   }
+  // }
+

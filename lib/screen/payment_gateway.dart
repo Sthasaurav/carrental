@@ -24,7 +24,7 @@ class PaymentGatewayScreen extends StatelessWidget {
   payWithKhaltiInApp(BuildContext context) {
     KhaltiScope.of(context).pay(
       config: PaymentConfig(
-        amount: (productPrice * 100).toInt(), // in paisa
+        amount: (10000).toInt(), // in paisa
         productIdentity: productID.toString(),
         productName: productName,
         mobileReadOnly: false,
@@ -47,7 +47,7 @@ class PaymentGatewayScreen extends StatelessWidget {
             'price': product.price,
             'vehicletype': product.vehicletype,
             'driverName': product.driverName,
-            'phoneNumber': product.phoneNumber,
+            'phoneNumber': 100,
             'vehicle_no': product.vehicleNumber,
             // Add more fields if needed
           });

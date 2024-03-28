@@ -358,6 +358,6 @@ class _AddProductPageState extends State<AddProductPage> {
     // return downloadUrl;
 
     // For now, return a placeholder URL
-    return 'assets/v-9.png';
+    return 'assets/v-11.png';
   }
 }

@@ -95,7 +95,7 @@ class ProductCard extends StatelessWidget {
                           ),
                           // SizedBox(width: 5),
                           Text(
-                            '${product.distance} km',
+                            '${product.distance.toStringAsFixed(2)} km',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 10,
