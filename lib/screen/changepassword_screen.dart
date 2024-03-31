@@ -137,6 +137,15 @@ class ChangePasswordPage extends StatelessWidget {
                       }
                     },
                     child: Text('Change Password'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kprimaryColor,
+                      onPrimary: Colors.white,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
                   ),
                 ],
               ),

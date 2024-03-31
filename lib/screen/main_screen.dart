@@ -1,6 +1,5 @@
 import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/screen/allproduct.dart';
-import 'package:firebase_2/screen/cart_screen.dart';
 
 import 'package:firebase_2/screen/home_screen.dart';
 import 'package:firebase_2/screen/order_screen.dart';

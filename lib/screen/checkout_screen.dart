@@ -13,6 +13,8 @@ class CheckoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       backgroundColor: kcontentColor,
       body: SafeArea(
@@ -63,20 +65,22 @@ class CheckoutScreen extends StatelessWidget {
                     // Display order details such as product, rental dates, etc.
                     buildOrderDetail("From           ", getEmail()),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Car Model     ", product.title),
+                    buildOrderDetail("Contact        ", getPhoneNumber(user)),
+                    const SizedBox(height: 15),
+                    buildOrderDetail("Car Model      ", product.title),
                     const SizedBox(height: 15),
                     buildOrderDetail("Category       ", product.category),
                     const SizedBox(height: 15),
                     buildOrderDetail("Amount         ", "Rs.${product.price}"),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Vehicle Type ", product.vehicletype),
+                    buildOrderDetail("Vehicle Type   ", product.vehicletype),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Driver's Name", product.driverName),
+                    buildOrderDetail("Driver's Name  ", product.driverName),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Phone No.     ", product.phoneNumber),
+                    buildOrderDetail("Phone No.      ", product.phoneNumber),
                     const SizedBox(height: 15),
                     buildOrderDetail(
-                        "Vehicle Number         ", "${product.vehicleNumber}"),
+                        "Vehicle Number ", "${product.vehicleNumber}"),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
@@ -106,32 +110,17 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           );
                         } else {
-                          try {
-                            await firestore.collection('booking').add({
-                              'title': product.title,
-                              'category': product.category,
-                              'price': product.price,
-                              'vehicletype': product.vehicletype,
-                              'driverName': product.driverName,
-                              'phoneNumber': product.phoneNumber,
-                              'vehicle_no': product.vehicleNumber,
-                              'from': getEmail(),
-                            });
-
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PaymentGatewayScreen(
-                                  product: product,
-                                  productID: product.vehicleNumber,
-                                  productName: product.vehicletype,
-                                  productPrice: product.price,
-                                ),
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PaymentGatewayScreen(
+                                product: product,
+                                productID: product.vehicleNumber,
+                                productName: product.vehicletype,
+                                productPrice: product.price,
                               ),
-                            );
-                          } catch (e) {
-                            print("Error adding booking data: $e");
-                          }
+                            ),
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -169,6 +158,14 @@ class CheckoutScreen extends StatelessWidget {
     }
   }
 
+  String getPhoneNumber(User? user) {
+    if (user != null && user.phoneNumber != null) {
+      return user.phoneNumber!;
+    } else {
+      return 'Unknown';
+    }
+  }
+
   Widget buildOrderDetail(String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -186,62 +183,6 @@ class CheckoutScreen extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class ConfirmationScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kcontentColor,
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.check_circle,
-                color: Colors.green,
-                size: 100,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Booking Confirmed!",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "Thank you for choosing our service.",
-                style: TextStyle(fontSize: 18),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kprimaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  minimumSize: const Size(200, 50),
-                ),
-                child: const Text(
-                  "Back to Home",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

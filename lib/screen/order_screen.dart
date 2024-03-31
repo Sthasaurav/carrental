@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore library
 import 'package:firebase_2/constant.dart'; // Import your constants file
+import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth for user authentication
+import 'package:url_launcher/url_launcher.dart'; // Import url_launcher for making phone calls
 
 class OrderScreen extends StatelessWidget {
   const OrderScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser; // Get current user
+
     return Scaffold(
       backgroundColor: kscaffoldColor,
       appBar: AppBar(
@@ -21,15 +25,13 @@ class OrderScreen extends StatelessWidget {
         leadingWidth: 60,
         leading: Padding(
           padding: const EdgeInsets.only(left: 5),
-          child: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black,
-          ),
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('booking').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('booking')
+            .where('from', isEqualTo: user!.email)
+            .snapshots(), // Filter orders by userEmail
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -68,7 +70,29 @@ class OrderScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 8),
                         Text('Category: ${orderData['category']}'),
-                        Text('Price: \$${orderData['price']}'),
+                        Text('Vehicle Type: ${orderData['vehicletype']}'),
+                        Text('Price: \$${orderData['price']} per Day'),
+                        Text("Driver's Name: ${orderData['driverName']}"),
+                        Row(
+                          children: [
+                            Text(
+                              "Call Driver for more informations ",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.phone,
+                                color: Colors.green,
+                              ),
+                              onPressed: () {
+                                makePhoneCall(orderData['phoneNumber']);
+                              },
+                            ),
+                          ],
+                        ),
                         // You can display more information here as per your Firestore schema
                       ],
                     ),
@@ -80,5 +104,14 @@ class OrderScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  // Function to make a phone call
+  void makePhoneCall(String phoneNumber) async {
+    if (await canLaunch('tel:$phoneNumber')) {
+      await launch('tel:$phoneNumber');
+    } else {
+      throw 'Could not launch $phoneNumber';
+    }
   }
 }

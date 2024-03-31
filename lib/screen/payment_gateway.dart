@@ -1,10 +1,11 @@
-import 'package:firebase_2/screen/checkout_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_2/Model/product.dart';
 import 'package:firebase_2/constant.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_2/screen/checkout_screen.dart';
 
 class PaymentGatewayScreen extends StatelessWidget {
   const PaymentGatewayScreen({
@@ -32,47 +33,46 @@ class PaymentGatewayScreen extends StatelessWidget {
       preferences: [
         PaymentPreference.khalti,
       ],
-      onSuccess: (PaymentSuccessModel data) async {
+      onSuccess: (PaymentSuccessModel data) {
         // Handle payment success
-        // Store transaction details in database
-        print("Payment Success");
-
-        try {
-          FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-          // Add the booking data to Firestore
-          await firestore.collection('booking').add({
-            'title': product.title,
-            'category': product.category,
-            'price': product.price,
-            'vehicletype': product.vehicletype,
-            'driverName': product.driverName,
-            'phoneNumber': 100,
-            'vehicle_no': product.vehicleNumber,
-            // Add more fields if needed
-          });
-
-          // Navigate to the confirmation screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => ConfirmationScreen()),
-          );
-        } catch (e) {
-          // Handle errors, such as Firestore write errors
-          print("Error adding booking data: $e");
-        }
+        // You can add logic here if needed
       },
       onFailure: (PaymentFailureModel data) {
         // Handle payment failure
-        // You can show an error message or retry option here
-        // print data
-        print(data.toString());
+        // You can add logic here if needed
       },
       onCancel: () {
-        // Handle cancellation logic here
-        print("Payment Cancelled");
+        // Handle payment cancellation
+        // You can add logic here if needed
       },
     );
+  }
+
+  // Function to handle placing the order
+  void placeOrder(BuildContext context) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Add the booking data to Firestore
+      await firestore.collection('booking').add({
+        'title': product.title,
+        'category': product.category,
+        'price': product.price,
+        'vehicletype': product.vehicletype,
+        'driverName': product.driverName,
+        'driverphoneNumber': product.phoneNumber,
+        'vehicle_no': product.vehicleNumber,
+        'from': getEmail(),
+        'phoneNumber':getNumber(),
+        // Add more fields if needed
+      });
+
+      // Call the function to initiate payment
+      payWithKhaltiInApp(context);
+    } catch (e) {
+      // Handle errors, such as Firestore write errors
+      print("Error adding booking data: $e");
+    }
   }
 
   @override
@@ -132,10 +132,9 @@ class PaymentGatewayScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       // Implement the logic to complete the booking
-                      // This could involve processing payment, updating database, etc.
-                      onPressed: () async {
-                        // Call the payment function
-                        payWithKhaltiInApp(context);
+                      onPressed: () {
+                        // Call the function to place the order
+                        placeOrder(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kprimaryColor,
@@ -164,58 +163,19 @@ class PaymentGatewayScreen extends StatelessWidget {
   }
 }
 
-// class ConfirmationScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: kcontentColor,
-//       body: SafeArea(
-//         child: Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               const Icon(
-//                 Icons.check_circle,
-//                 color: Colors.green,
-//                 size: 100,
-//               ),
-//               const SizedBox(height: 20),
-//               const Text(
-//                 "Booking Confirmed!",
-//                 style: TextStyle(
-//                   fontSize: 24,
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//               const SizedBox(height: 10),
-//               const Text(
-//                 "Thank you for choosing our service.",
-//                 style: TextStyle(fontSize: 18),
-//               ),
-//               const SizedBox(height: 20),
-//               ElevatedButton(
-//                 onPressed: () {
-//                   Navigator.popUntil(context, (route) => route.isFirst);
-//                 },
-//                 style: ElevatedButton.styleFrom(
-//                   backgroundColor: kprimaryColor,
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(10),
-//                   ),
-//                   minimumSize: const Size(200, 50),
-//                 ),
-//                 child: const Text(
-//                   "Back to Home",
-//                   style: TextStyle(
-//                     fontSize: 18,
-//                     color: Colors.white,
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+String getEmail() {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null && user.email != null) {
+    return user.email!;
+  } else {
+    return 'Unknown';
+  }
+}
+  String getNumber() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.phoneNumber != null) {
+      return user.phoneNumber!;
+    } else {
+      return 'Unknown';
+    }
+  }
