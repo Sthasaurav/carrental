@@ -1,7 +1,7 @@
+import 'package:firebase_2/Model/product.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_2/screen/payment_gateway.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_2/Model/product.dart';
 import 'package:firebase_2/constant.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -61,7 +61,7 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     // Display order details such as product, rental dates, etc.
-                    buildOrderDetail("From           ", getEmailDomain()),
+                    buildOrderDetail("From           ", getEmail()),
                     const SizedBox(height: 15),
                     buildOrderDetail("Car Model     ", product.title),
                     const SizedBox(height: 15),
@@ -75,27 +75,20 @@ class CheckoutScreen extends StatelessWidget {
                     const SizedBox(height: 15),
                     buildOrderDetail("Phone No.     ", product.phoneNumber),
                     const SizedBox(height: 15),
-
                     buildOrderDetail(
                         "Vehicle Number         ", "${product.vehicleNumber}"),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      // Implement the logic to complete the booking
-                      // This could involve processing payment, updating database, etc.
-                      // After completion, navigate to a confirmation screen
-                      // Assuming you have initialized Firestore somewhere in your app
                       onPressed: () async {
                         FirebaseFirestore firestore =
                             FirebaseFirestore.instance;
 
-                        // Check if any document in the "booking" collection has the same "vehicle_no" value
                         QuerySnapshot querySnapshot = await firestore
                             .collection('booking')
                             .where('vehicle_no',
                                 isEqualTo: product.vehicleNumber)
                             .get();
 
-                        // If any matching document is found, show the message
                         if (querySnapshot.docs.isNotEmpty) {
                           showDialog(
                             context: context,
@@ -114,8 +107,6 @@ class CheckoutScreen extends StatelessWidget {
                           );
                         } else {
                           try {
-                            // Proceed with the booking logic
-                            // Add the booking data to Firestore
                             await firestore.collection('booking').add({
                               'title': product.title,
                               'category': product.category,
@@ -124,11 +115,9 @@ class CheckoutScreen extends StatelessWidget {
                               'driverName': product.driverName,
                               'phoneNumber': product.phoneNumber,
                               'vehicle_no': product.vehicleNumber,
-                              'from': getEmailDomain(), // Add "From" data
-                              // Add more fields if needed
+                              'from': getEmail(),
                             });
 
-                            // Redirect to payment gateway
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -141,12 +130,10 @@ class CheckoutScreen extends StatelessWidget {
                               ),
                             );
                           } catch (e) {
-                            // Handle errors, such as Firestore write errors
                             print("Error adding booking data: $e");
                           }
                         }
                       },
-
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kprimaryColor,
                         shape: RoundedRectangleBorder(
@@ -173,11 +160,10 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  // Function to get the email domain from the logged-in user
-  String getEmailDomain() {
+  String getEmail() {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null && user.email != null) {
-      return user.email!.split('@').last;
+      return user.email!;
     } else {
       return 'Unknown';
     }
