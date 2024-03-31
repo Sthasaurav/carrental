@@ -1,9 +1,10 @@
+// import 'package:firebase_2/constant.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
 // import 'package:ionicons/ionicons.dart';
-// import 'package:shop_example/constants.dart';
-// import 'package:shop_example/models/cart_item.dart';
-// import 'package:shop_example/widgets/cart_tile.dart';
+// // import 'package:shop_example/constants.dart';
+// // import 'package:shop_example/models/cart_item.dart';
+// // import 'package:flutter2/widgets/cart_tile.dart';
 // // import 'package:shop_example/widgets/check_out_box.dart';
 
 // class CartScreen extends StatefulWidget {

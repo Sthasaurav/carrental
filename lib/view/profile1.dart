@@ -39,14 +39,23 @@ class _ProfileUdState extends State<ProfileUd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: kscaffoldColor,
+        centerTitle: true,
         title: Text(
           "Profile",
           style: TextStyle(
-            fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: kscaffoldColor,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.arrow_back),
+            color: Colors.black,
+          ),
+        ),
       ),
       body: Container(
         color: Colors.white,

@@ -86,12 +86,12 @@ class ProductCard extends StatelessWidget {
                   );
                 },
                 icon: Icon(Icons.edit),
-                color: Colors.grey,
+                color: Colors.green,
               ),
               IconButton(
                 onPressed: () {
                   // Delete button action
-                  // _showDeleteConfirmationDialog();
+                  _showDeleteConfirmationDialog();
                 },
                 icon: Icon(Icons.delete),
                 color: Colors.red,
@@ -103,6 +103,8 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
+
+class _showDeleteConfirmationDialog {}
 
 class ProductEditForm extends StatefulWidget {
   final DocumentSnapshot productSnapshot;
