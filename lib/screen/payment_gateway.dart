@@ -61,9 +61,9 @@ class PaymentGatewayScreen extends StatelessWidget {
         'vehicletype': product.vehicletype,
         'driverName': product.driverName,
         'driverphoneNumber': product.phoneNumber,
-        'vehicle_no': product.vehicleNumber,
+        'vehicleNumber': product.vehicleNumber,
         'from': getEmail(),
-        'phoneNumber':getNumber(),
+        'phoneNumber': getNumber(),
         // Add more fields if needed
       });
 
@@ -171,11 +171,12 @@ String getEmail() {
     return 'Unknown';
   }
 }
-  String getNumber() {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null && user.phoneNumber != null) {
-      return user.phoneNumber!;
-    } else {
-      return 'Unknown';
-    }
+
+String getNumber() {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null && user.phoneNumber != null) {
+    return user.phoneNumber!;
+  } else {
+    return 'Unknown';
   }
+}

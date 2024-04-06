@@ -89,7 +89,7 @@ class CheckoutScreen extends StatelessWidget {
 
                         QuerySnapshot querySnapshot = await firestore
                             .collection('booking')
-                            .where('vehicle_no',
+                            .where('vehicleNumber',
                                 isEqualTo: product.vehicleNumber)
                             .get();
 
@@ -159,10 +159,12 @@ class CheckoutScreen extends StatelessWidget {
   }
 
   String getPhoneNumber(User? user) {
+    User? user = FirebaseAuth.instance.currentUser;
+
     if (user != null && user.phoneNumber != null) {
       return user.phoneNumber!;
     } else {
-      return 'Unknown';
+      return 'unknown';
     }
   }
 
