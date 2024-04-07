@@ -111,10 +111,10 @@ class _MyAppState extends State<MyApp> {
                   //     Login()
 
                   // home: signUpProvider.isUserExist ? MainScreen() : SignUp(),
-                  // home: signUpProvider.isUserExist ? MainScreen() : Login(),
+                  home: signUpProvider.isUserExist ? MainScreen() : Login(),
                   // home: MainScreen(),
                   // home: MainSscreen(),
-                  home: MainScreen(),
+                  // home: MainScreen(),
                   navigatorKey: navKey,
                   localizationsDelegates: const [
                     KhaltiLocalizations.delegate,

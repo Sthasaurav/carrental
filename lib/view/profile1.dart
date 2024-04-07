@@ -50,11 +50,6 @@ class _ProfileUdState extends State<ProfileUd> {
         leadingWidth: 60,
         leading: Padding(
           padding: const EdgeInsets.only(left: 5),
-          child: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black,
-          ),
         ),
       ),
       body: Container(

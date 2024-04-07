@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth for us
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:url_launcher/url_launcher.dart'; // Import url_launcher for making phone calls
 import 'package:intl/intl.dart';
+import 'package:firebase_2/screen/main_screen.dart';
 
 class OrderScreen extends StatelessWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -171,7 +172,20 @@ class _OrderItemCardState extends State<OrderItemCard> {
                   : () {
                       submitRatingAndReview();
                     },
-              child: Text('Submit'),
+              child: Text(
+                'Submit',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kprimaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                minimumSize: Size(double.infinity, 50),
+              ),
             ),
           ],
         ),
@@ -188,25 +202,63 @@ class _OrderItemCardState extends State<OrderItemCard> {
     }
   }
 
-  // Function to submit rating and review
   void submitRatingAndReview() {
     User? user = FirebaseAuth.instance.currentUser; // Get current user
-    // Save rating, review, and user email to Firestore
-    FirebaseFirestore.instance.collection('ratings').add({
-      'orderTitle': widget.orderData['title'],
-      'rating': _rating,
-      'review': _review,
-      'userEmail': user!.email, // Add user email
-    });
-    // Show a confirmation message to the user
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Rating and review submitted.'),
-      ),
-    );
-    // Set feedback submitted flag to true
-    setState(() {
-      _feedbackSubmitted = true;
+    String orderTitle = widget.orderData['title'];
+
+    // Check if the user has already submitted feedback for this order
+    FirebaseFirestore.instance
+        .collection('ratings')
+        .where('userEmail', isEqualTo: user!.email)
+        .where('orderTitle', isEqualTo: orderTitle)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        // If feedback is already submitted, show a message to the user
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('You have already submitted feedback for this vehicle.'),
+          ),
+        );
+      } else {
+        // Save rating, review, and user email to Firestore
+        FirebaseFirestore.instance.collection('ratings').add({
+          'orderTitle': orderTitle,
+          'rating': _rating,
+          'review': _review,
+          'userEmail': user.email, // Add user email
+        }).then((_) {
+          // Show a confirmation message to the user
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Successfully rating and review submitted'),
+            ),
+          );
+          // Set feedback submitted flag to true
+          setState(() {
+            _feedbackSubmitted = true;
+          });
+          // Navigate to the main screen
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => MainScreen()),
+          );
+        }).catchError((error) {
+          // Handle any errors that occur during the process
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error submitting rating and review.'),
+            ),
+          );
+        });
+      }
+    }).catchError((error) {
+      // Handle any errors that occur during the process
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error checking feedback submission status.'),
+        ),
+      );
     });
   }
 }
