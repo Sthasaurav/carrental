@@ -77,6 +77,7 @@ class OrderItemCard extends StatefulWidget {
 class _OrderItemCardState extends State<OrderItemCard> {
   double _rating = 0.0; // Initial rating value
   String _review = ''; // Initial review value
+  bool _feedbackSubmitted = false; // Track whether feedback is submitted
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +86,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
     String formattedDate = DateFormat.yMMMMd().format(selectedDate);
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      color: kcontentColor,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -145,6 +147,8 @@ class _OrderItemCardState extends State<OrderItemCard> {
                   _rating = rating;
                 });
               },
+              // Disable rating if feedback is submitted
+              tapOnlyMode: !_feedbackSubmitted,
             ),
             SizedBox(height: 16),
             TextField(
@@ -157,12 +161,16 @@ class _OrderItemCardState extends State<OrderItemCard> {
                   _review = value;
                 });
               },
+              // Disable review if feedback is submitted
+              enabled: !_feedbackSubmitted,
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                submitRatingAndReview();
-              },
+              onPressed: _feedbackSubmitted
+                  ? null // Disable button if feedback is submitted
+                  : () {
+                      submitRatingAndReview();
+                    },
               child: Text('Submit'),
             ),
           ],
@@ -182,11 +190,13 @@ class _OrderItemCardState extends State<OrderItemCard> {
 
   // Function to submit rating and review
   void submitRatingAndReview() {
-    // Save rating and review to Firestore
+    User? user = FirebaseAuth.instance.currentUser; // Get current user
+    // Save rating, review, and user email to Firestore
     FirebaseFirestore.instance.collection('ratings').add({
       'orderTitle': widget.orderData['title'],
       'rating': _rating,
       'review': _review,
+      'userEmail': user!.email, // Add user email
     });
     // Show a confirmation message to the user
     ScaffoldMessenger.of(context).showSnackBar(
@@ -194,10 +204,15 @@ class _OrderItemCardState extends State<OrderItemCard> {
         content: Text('Rating and review submitted.'),
       ),
     );
-    // Clear rating and review fields
-    // setState(() {
-    //   _rating = 0.0;
-    //   _review = '';
-    // });
+    // Set feedback submitted flag to true
+    setState(() {
+      _feedbackSubmitted = true;
+    });
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: OrderScreen(),
+  ));
 }

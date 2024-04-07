@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-
 class ProductInfo extends StatelessWidget {
   final Product product;
   const ProductInfo({Key? key, required this.product}) : super(key: key);
@@ -79,7 +78,7 @@ class ProductInfo extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 const Text(
-                  "(320 Reviews)",
+                  "",
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 14,
@@ -151,7 +150,7 @@ class ProductInfo extends StatelessWidget {
 
         const SizedBox(height: 5), // Add space between rows
         Text(
-          "\Rs.${product.price}",
+          "\Rs.${product.price}/Day",
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

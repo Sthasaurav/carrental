@@ -96,16 +96,20 @@ class _OrderPageState extends State<OrderPage> {
 
             return Card(
               margin: EdgeInsets.all(8.0),
+              color: kcontentColor,
               child: ListTile(
                 title: Text('Model: ${bookingData['title']}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('From: ${bookingData['from']}'),
+
                     Text('Category: ${bookingData['category']}'),
                     Text('Price: \Rs.${bookingData['price']}'),
                     Text(
                         'Vehicle No.: ${bookingData['vehicleNumber'].toString().replaceAll(".0", "")}'), // Remove .0
+                    Text("Client's Location: ${bookingData['userlocation']}"),
+
                     Text(
                         'Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDate)}'), // Display only date
                   ],

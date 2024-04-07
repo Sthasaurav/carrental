@@ -84,7 +84,7 @@ class _AdminScreenState extends State<AdminScreen> {
                 currentTab = 2;
               }),
               icon: Icon(
-                Ionicons.cart_outline,
+                Ionicons.notifications_outline,
                 color: currentTab == 2 ? kprimaryColor : Colors.grey.shade400,
               ),
             ),

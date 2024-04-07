@@ -5,9 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_2/screen/payment_gateway.dart';
 import 'package:firebase_2/constant.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   final Product product;
   final DateTime selectedDate;
 
@@ -16,6 +18,42 @@ class CheckoutScreen extends StatelessWidget {
     required this.product,
     required this.selectedDate,
   }) : super(key: key);
+
+  @override
+  _CheckoutScreenState createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  String _currentLocation = 'Bhaktpur';
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+
+      // Extract location details from the Placemark
+      Placemark placemark = placemarks[0];
+      String city = placemark.locality ?? 'Unknown city';
+      String area = placemark.subLocality ?? '';
+
+      setState(() {
+        _currentLocation = '$city, $area';
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        _currentLocation = 'Unable to fetch location';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +80,6 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                       icon: const Icon(Ionicons.chevron_back),
                     ),
-                    // Add other icons/buttons here if needed
                   ],
                 ),
               ),
@@ -68,41 +105,47 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Display order details such as product, rental dates, etc.
-                    buildOrderDetail("From           ", getEmail()),
+                    buildOrderDetail("From", getEmail()),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Contact        ", getPhoneNumber(user)),
-                    const SizedBox(height: 15),
+                    // buildOrderDetail("Contact        ", getPhoneNumber(user)),
+                    // const SizedBox(height: 15),
                     buildOrderDetail("Selected Date  ",
-                        "${selectedDate.toString().split(' ')[0]}"),
+                        "${widget.selectedDate.toString().split(' ')[0]}"),
                     const SizedBox(height: 15),
-                    buildOrderDetail("Car Model      ", product.title),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Category       ", product.category),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Amount         ", "Rs.${product.price}"),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Vehicle Type   ", product.vehicletype),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Driver's Name  ", product.driverName),
-                    const SizedBox(height: 15),
-                    buildOrderDetail("Phone No.      ", product.phoneNumber),
+                    buildOrderDetail("Car Model      ", widget.product.title),
                     const SizedBox(height: 15),
                     buildOrderDetail(
-                        "Vehicle Number ", "${product.vehicleNumber}"),
+                        "Category       ", widget.product.category),
                     const SizedBox(height: 15),
-
+                    buildOrderDetail(
+                        "Amount         ", "Rs.${widget.product.price}"),
+                    const SizedBox(height: 15),
+                    buildOrderDetail(
+                        "Vehicle Type   ", widget.product.vehicletype),
+                    const SizedBox(height: 15),
+                    buildOrderDetail(
+                        "Driver's Name  ", widget.product.driverName),
+                    const SizedBox(height: 15),
+                    buildOrderDetail(
+                        "Phone No.      ", widget.product.phoneNumber),
+                    const SizedBox(height: 15),
+                    buildOrderDetail(
+                        "Vehicle Number ", "${widget.product.vehicleNumber}"),
+                    const SizedBox(height: 15),
+                    buildOrderDetail("Vehicle Location",
+                        "${widget.product.location}, Nepal"),
+                    const SizedBox(height: 15),
                     ElevatedButton(
                       onPressed: () async {
                         FirebaseFirestore firestore =
                             FirebaseFirestore.instance;
 
-                        // Check if the vehicle is already booked for the selected date
                         QuerySnapshot querySnapshot = await firestore
                             .collection('booking')
                             .where('vehicleNumber',
-                                isEqualTo: product.vehicleNumber)
-                            .where('selectedDate', isEqualTo: selectedDate)
+                                isEqualTo: widget.product.vehicleNumber)
+                            .where('selectedDate',
+                                isEqualTo: widget.selectedDate)
                             .get();
 
                         if (querySnapshot.docs.isNotEmpty) {
@@ -125,38 +168,31 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           );
                         } else {
-                          // If the vehicle is not already booked, navigate to the payment gateway screen
                           FirebaseFirestore firestore =
                               FirebaseFirestore.instance;
 
-                          // Add the booking data to Firestore
-                          // Get user email and phone number
                           String userEmail = getEmail();
-                          // String userPhoneNumber = getPhoneNumber();
 
-                          // Add booking details to Firestore
                           await firestore.collection('booking').add({
-                            'vehicleNumber': product.vehicleNumber,
-                            'vehicletype': product.vehicletype,
-                            'price': product.price,
-                            'selectedDate':
-                                selectedDate, // Convert DateTime to string
-                            'category': product.category,
-                            'driverName': product.driverName,
-                            'driverphoneNumber': product.phoneNumber,
-                            // 'phoneNumber': userPhoneNumber,
-                            'title': product.title,
+                            'vehicleNumber': widget.product.vehicleNumber,
+                            'vehicletype': widget.product.vehicletype,
+                            'price': widget.product.price,
+                            'selectedDate': widget.selectedDate,
+                            'category': widget.product.category,
+                            'driverName': widget.product.driverName,
+                            'driverphoneNumber': widget.product.phoneNumber,
+                            'title': widget.product.title,
                             'from': userEmail,
-                            // Add other fields as needed
+                            'userlocation': _currentLocation,
                           });
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => PaymentGatewayScreen(
-                                product: product,
-                                productID: product.vehicleNumber,
-                                productName: product.vehicletype,
-                                productPrice: product.price,
+                                product: widget.product,
+                                productID: widget.product.vehicleNumber,
+                                productName: widget.product.vehicletype,
+                                productPrice: widget.product.price,
                               ),
                             ),
                           );
