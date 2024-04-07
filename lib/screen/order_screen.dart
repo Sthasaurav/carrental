@@ -4,6 +4,7 @@ import 'package:firebase_2/constant.dart'; // Import your constants file
 import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth for user authentication
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:url_launcher/url_launcher.dart'; // Import url_launcher for making phone calls
+import 'package:intl/intl.dart';
 
 class OrderScreen extends StatelessWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -79,6 +80,9 @@ class _OrderItemCardState extends State<OrderItemCard> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime selectedDate =
+        (widget.orderData['selectedDate'] as Timestamp).toDate();
+    String formattedDate = DateFormat.yMMMMd().format(selectedDate);
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       elevation: 2,
@@ -97,8 +101,12 @@ class _OrderItemCardState extends State<OrderItemCard> {
             SizedBox(height: 8),
             Text('Category: ${widget.orderData['category']}'),
             Text('Vehicle Type: ${widget.orderData['vehicletype']}'),
-            Text('Price: \$${widget.orderData['price']} per Day'),
+            Text(
+                'Vehicle No.:Ba Pa ${widget.orderData['vehicleNumber'].toString().replaceAll(".0", "")}'), // Remove .0
+
+            Text('Price: \RS.${widget.orderData['price']} per Day'),
             Text("Driver's Name: ${widget.orderData['driverName']}"),
+            Text("Selected Date: $formattedDate"), // Display formatted date
             Row(
               children: [
                 Text(
@@ -114,7 +122,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
                     color: Colors.green,
                   ),
                   onPressed: () {
-                    makePhoneCall(widget.orderData['phoneNumber']);
+                    makePhoneCall(widget.orderData['driverphoneNumber']);
                   },
                 ),
               ],
@@ -187,9 +195,9 @@ class _OrderItemCardState extends State<OrderItemCard> {
       ),
     );
     // Clear rating and review fields
-    setState(() {
-      _rating = 0.0;
-      _review = '';
-    });
+    // setState(() {
+    //   _rating = 0.0;
+    //   _review = '';
+    // });
   }
 }

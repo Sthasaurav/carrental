@@ -18,8 +18,27 @@ class PaymentGatewayScreen extends StatelessWidget {
 
   final productName;
   final productPrice;
+
   final productID;
   final Product product;
+
+  String getEmail() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.email != null) {
+      return user.email!;
+    } else {
+      return 'Unknown';
+    }
+  }
+
+  String getPhoneNumber() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.phoneNumber != null) {
+      return user.phoneNumber!;
+    } else {
+      return 'Unknown';
+    }
+  }
 
   // Function to pay with Khalti
   payWithKhaltiInApp(BuildContext context) {
@@ -49,24 +68,8 @@ class PaymentGatewayScreen extends StatelessWidget {
   }
 
   // Function to handle placing the order
-  void placeOrder(BuildContext context) async {
+  void placeOrder(BuildContext context, DateTime selectedDate) async {
     try {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-      // Add the booking data to Firestore
-      await firestore.collection('booking').add({
-        'title': product.title,
-        'category': product.category,
-        'price': product.price,
-        'vehicletype': product.vehicletype,
-        'driverName': product.driverName,
-        'driverphoneNumber': product.phoneNumber,
-        'vehicleNumber': product.vehicleNumber,
-        'from': getEmail(),
-        'phoneNumber': getNumber(),
-        // Add more fields if needed
-      });
-
       // Call the function to initiate payment
       payWithKhaltiInApp(context);
     } catch (e) {
@@ -134,7 +137,8 @@ class PaymentGatewayScreen extends StatelessWidget {
                       // Implement the logic to complete the booking
                       onPressed: () {
                         // Call the function to place the order
-                        placeOrder(context);
+                        placeOrder(
+                            context, DateTime.now()); // Pass selectedDate
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kprimaryColor,
@@ -160,23 +164,5 @@ class PaymentGatewayScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-String getEmail() {
-  User? user = FirebaseAuth.instance.currentUser;
-  if (user != null && user.email != null) {
-    return user.email!;
-  } else {
-    return 'Unknown';
-  }
-}
-
-String getNumber() {
-  User? user = FirebaseAuth.instance.currentUser;
-  if (user != null && user.phoneNumber != null) {
-    return user.phoneNumber!;
-  } else {
-    return 'Unknown';
   }
 }

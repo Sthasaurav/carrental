@@ -131,6 +131,7 @@ class _EditProductDetailPageState extends State<EditProductDetailPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Product updated successfully')),
       );
+
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to update product: $error')),

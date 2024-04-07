@@ -81,11 +81,11 @@ class _AdminScreenState extends State<AdminScreen> {
             ),
             IconButton(
               onPressed: () => setState(() {
-                currentTab = 3;
+                currentTab = 2;
               }),
               icon: Icon(
                 Ionicons.cart_outline,
-                color: currentTab == 3 ? kprimaryColor : Colors.grey.shade400,
+                color: currentTab == 2 ? kprimaryColor : Colors.grey.shade400,
               ),
             ),
             IconButton(

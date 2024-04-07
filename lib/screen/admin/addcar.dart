@@ -1,6 +1,7 @@
 import 'package:firebase_2/Model/product.dart';
 import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/customui/customtextformfield.dart';
+import 'package:firebase_2/screen/admin/admin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -332,7 +333,10 @@ class _AddProductPageState extends State<AddProductPage> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => AdminScreen()),
+                  ); // Close the dialog
                 },
                 child: Text('OK'),
               ),

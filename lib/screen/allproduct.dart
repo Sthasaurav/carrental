@@ -58,15 +58,6 @@ class AllProductPage extends StatelessWidget {
                               Text('No product details found in Firestore.'));
                     }
 
-                    // Sort the products by distance from the user
-                    List<DocumentSnapshot> documents = snapshot.data!.docs;
-                    documents.sort((a, b) {
-                      // Access distance field from documents and compare
-                      double distanceA = a.get('distance');
-                      double distanceB = b.get('distance');
-                      return distanceA.compareTo(distanceB);
-                    });
-
                     return GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -76,11 +67,11 @@ class AllProductPage extends StatelessWidget {
                         crossAxisSpacing: 8,
                         mainAxisSpacing: 10,
                       ),
-                      itemCount: documents.length,
+                      itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         try {
-                          Map<String, dynamic> data =
-                              documents[index].data() as Map<String, dynamic>;
+                          Map<String, dynamic> data = snapshot.data!.docs[index]
+                              .data() as Map<String, dynamic>;
                           print("Data for index $index: $data");
                           Product product = Product.fromMap(data);
                           return ProductCard(product: product);

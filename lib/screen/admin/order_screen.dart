@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_2/constant.dart';
+import 'package:intl/intl.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({Key? key}) : super(key: key);
@@ -89,6 +90,10 @@ class _OrderPageState extends State<OrderPage> {
 
             bool isAccepted = _acceptedMap[documentId] ?? false;
 
+            // Convert selectedDate timestamp to DateTime object
+            DateTime selectedDate = (bookingData['selectedDate'] as Timestamp)
+                .toDate(); // Assuming 'selectedDate' field exists
+
             return Card(
               margin: EdgeInsets.all(8.0),
               child: ListTile(
@@ -99,7 +104,10 @@ class _OrderPageState extends State<OrderPage> {
                     Text('From: ${bookingData['from']}'),
                     Text('Category: ${bookingData['category']}'),
                     Text('Price: \Rs.${bookingData['price']}'),
-                    Text('Vehicle No.:Ba Pa ${bookingData['vehicle_no']}'),
+                    Text(
+                        'Vehicle No.: ${bookingData['vehicleNumber'].toString().replaceAll(".0", "")}'), // Remove .0
+                    Text(
+                        'Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDate)}'), // Display only date
                   ],
                 ),
                 // trailing: ElevatedButton(

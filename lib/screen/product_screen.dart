@@ -1,6 +1,7 @@
 import 'package:firebase_2/constant.dart';
 import 'package:firebase_2/Model/product.dart';
 import 'package:firebase_2/screen/checkout_screen.dart';
+import 'package:firebase_2/widgets/product_widgets/information.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +17,28 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  late DateTime _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize selected date with the current date
+    _selectedDate = DateTime.now();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedDate = picked;
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,8 +96,21 @@ class _ProductScreenState extends State<ProductScreen> {
                     ProductInfo(product: widget.product),
                     const SizedBox(height: 20),
                     ProductDescription(
-                        text: widget.product.description,
-                        product: widget.product),
+                      text: widget.product.description,
+                      product: widget.product,
+                      onSelectDate: () => _selectDate(context),
+                      selectedDate: _selectedDate,
+                      onRentNowPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => CheckoutScreen(
+                              product: widget.product,
+                              selectedDate: _selectedDate,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -86,124 +122,21 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 }
 
-class ProductInfo extends StatelessWidget {
-  final Product product;
-  const ProductInfo({Key? key, required this.product}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Product title
-        Text(
-          product.title,
-          style: const TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        // Category and Rating section
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Category centered below title
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.category,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 129, 105, 105),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Rating section at the right of the category
-            Row(
-              children: [
-                Container(
-                  width: 50,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: kprimaryColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 5,
-                    vertical: 2,
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Ionicons.star,
-                        size: 13,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 3),
-                      Text(
-                        product.rate.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 5),
-                IconButton(
-                  onPressed: () {
-                    Helper.launchMaps("${product.location}");
-                  },
-                  icon: Icon(
-                    Icons.location_on,
-                    size: 20,
-                    color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 5), // Add space between rows
-        Text(
-          "\Rs.${product.price}/Day",
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class ProductDescription extends StatelessWidget {
   final Product product;
   final String text;
+  final DateTime selectedDate;
+  final VoidCallback onSelectDate;
+  final VoidCallback onRentNowPressed;
 
   const ProductDescription({
     Key? key,
     required this.product,
     required this.text,
+    required this.onSelectDate,
+    required this.selectedDate,
+    required this.onRentNowPressed,
   }) : super(key: key);
-
-  Future<void> makePhoneCall(String phoneNumber) async {
-    String url = 'tel:$phoneNumber';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -237,77 +170,55 @@ class ProductDescription extends StatelessWidget {
 
         Row(
           children: [
-            // Owner picture
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage(product.driverImage),
-            ),
-            const SizedBox(width: 10),
-            // Owner name
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Above Owner name
-                  Text(
-                    "Driver",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey, // Set color to grey
-                    ),
-                  ),
-                  // Owner name
-                  Text(
-                    product.driverName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  // You can add more owner information here
-                ],
+            ElevatedButton(
+              onPressed: onSelectDate,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kprimaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                minimumSize: Size(150, 50),
+              ),
+              child: Text(
+                "Select Date: ${selectedDate.toString().split(' ')[0]}",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
             ),
-            const Spacer(),
-            // Button to call the owner
-            IconButton(
-              icon: Icon(
-                Icons.phone,
-                color: Colors.green,
-              ),
-              onPressed: () {
-                makePhoneCall(product.phoneNumber);
-              },
-            ),
-            // Book now button
           ],
         ),
-        const SizedBox(height: 20), // Add space between rows
+
+        const SizedBox(height: 20), // Add space below Select Date button
 
         ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => CheckoutScreen(product: product),
-              ),
-            );
-          },
+          onPressed: onRentNowPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: kprimaryColor, // Change button color to orange
+            backgroundColor: kprimaryColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10), // Set slight curve
+              borderRadius: BorderRadius.circular(10),
             ),
-            minimumSize: Size(double.infinity, 50), // Set button size
+            minimumSize: Size(double.infinity, 50),
           ),
           child: Text(
             "Rent Now",
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               color: Colors.white,
             ),
-            // Increase font size
           ),
         ),
       ],
     );
+  }
+}
+
+Future<void> makePhoneCall(String phoneNumber) async {
+  String url = 'tel:$phoneNumber';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }

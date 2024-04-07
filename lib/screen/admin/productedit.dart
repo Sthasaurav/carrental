@@ -1,3 +1,4 @@
+import 'package:firebase_2/screen/admin/admin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_2/constant.dart';
@@ -320,7 +321,10 @@ class _ProductEditFormState extends State<ProductEditForm> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminScreen()),
+                );
                 _updateProductData();
               },
               child: Text('Confirm'),
@@ -347,7 +351,10 @@ class _ProductEditFormState extends State<ProductEditForm> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminScreen()),
+                );
                 _deleteProduct();
               },
               child: Text(

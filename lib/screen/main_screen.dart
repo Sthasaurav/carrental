@@ -70,11 +70,11 @@ class _MainScreenState extends State<MainScreen> {
             ),
             IconButton(
               onPressed: () => setState(() {
-                currentTab = 1;
+                currentTab = 2;
               }),
               icon: Icon(
                 Ionicons.heart_outline,
-                color: currentTab == 1 ? kprimaryColor : Colors.grey.shade400,
+                color: currentTab == 2 ? kprimaryColor : Colors.grey.shade400,
               ),
             ),
             IconButton(
