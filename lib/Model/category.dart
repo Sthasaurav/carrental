@@ -9,11 +9,11 @@ class Category {
 }
 
 final List<Category> categories = [
-  Category(title: "Hyundai", image: "assets/hyundai.png"),
   Category(title: "volkswagen", image: "assets/volkswagen.png"),
   Category(title: "Ford", image: "assets/ford.png"),
   Category(title: "Renault", image: "assets/renault.png"),
   Category(title: "Nissan", image: "assets/nissan.png"),
+  Category(title: "Hyundai", image: "assets/hyundai.png"),
   Category(title: "Honda", image: "assets/honda.png"),
   Category(title: "Toyota", image: "assets/toyota.png"),
   Category(title: "BMW", image: "assets/bmw.png"),
